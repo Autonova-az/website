@@ -17,7 +17,7 @@ export async function generateMetadata({ searchParams }) {
 
 async function getAboutData(locale) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://admin-dev.autonova.az/api"
     const response = await fetch(`${baseUrl}/about?locale=${locale}`, {
       cache: 'no-store' // Ensure fresh data on each request
     })
