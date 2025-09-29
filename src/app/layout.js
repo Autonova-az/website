@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import Navbar from "@/components/Navbar";
+import {Suspense} from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
 
       </head>
       <body className={`${inter.variable} font-sans`}>
-        <Navbar />
+      <Suspense fallback={<div>Loading navbar...</div>}>
+          <Navbar />
+      </Suspense>
         {children}
         <Script src="/js/main.js" strategy="afterInteractive" />
       </body>

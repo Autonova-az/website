@@ -131,7 +131,7 @@ export default async function About({ searchParams }) {
                 <div className={styles.storyLine}></div>
               </div>
               <div className={styles.storyContent}>
-                <AboutStoryContent apiContent={aboutData?.ourHistory?.content} />
+                <AboutStoryContent searchParams ={ searchParams} apiContent={aboutData?.ourHistory?.content} />
 
 
                 <div className={styles.storyHighlights}>

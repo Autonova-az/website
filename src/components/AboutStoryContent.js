@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation'
 import { getClientLocale } from '@/utils/locale'
 import { useEffect, useState } from 'react'
 
-export default function AboutStoryContent({ apiContent }) {
-  const searchParams = useSearchParams()
+export default function AboutStoryContent({ apiContent , searchParams}) {
+
   const [locale, setLocale] = useState('az')
 
   useEffect(() => {
@@ -23,17 +23,17 @@ export default function AboutStoryContent({ apiContent }) {
         return (
           <>
             <p>
-              <strong>Компания Autonova была основана в 2019 году</strong> с целью открыть новую страницу на автомобильном рынке Азербайджана. 
-              Наша миссия - привозить лучшие образцы китайской автомобильной промышленности в Азербайджан, 
+              <strong>Компания Autonova была основана в 2019 году</strong> с целью открыть новую страницу на автомобильном рынке Азербайджана.
+              Наша миссия - привозить лучшие образцы китайской автомобильной промышленности в Азербайджан,
               предоставляя нашим клиентам качественные автомобили по доступным ценам.
             </p>
             <p>
-              Благодаря опыту, накопленному за годы работы, и надежным связям, которые мы создали, 
-              мы известны на азербайджанском рынке как <em>надежный партнер</em>. Мы тщательно отслеживаем 
+              Благодаря опыту, накопленному за годы работы, и надежным связям, которые мы создали,
+              мы известны на азербайджанском рынке как <em>надежный партнер</em>. Мы тщательно отслеживаем
               все процессы от выбора каждого автомобиля до его доставки и считаем удовлетворенность клиентов приоритетом.
             </p>
             <p>
-              Сегодня как Autonova мы успешно осуществили продажу <strong>более 500 автомобилей</strong> и 
+              Сегодня как Autonova мы успешно осуществили продажу <strong>более 500 автомобилей</strong> и
               завоевали доверие наших клиентов. В будущем мы продолжим укреплять нашу лидирующую позицию в этой области.
             </p>
           </>
@@ -42,17 +42,17 @@ export default function AboutStoryContent({ apiContent }) {
         return (
           <>
             <p>
-              <strong>Autonova company was founded in 2019</strong> with the aim of opening a new page in the 
-              Azerbaijan automotive market. Our mission is to bring the best examples of the Chinese automotive 
+              <strong>Autonova company was founded in 2019</strong> with the aim of opening a new page in the
+              Azerbaijan automotive market. Our mission is to bring the best examples of the Chinese automotive
               industry to Azerbaijan, providing our customers with quality and affordable automobiles.
             </p>
             <p>
-              Thanks to the experience we have gained over the years and the reliable relationships we have created, 
-              we are known in the Azerbaijan market as a <em>reliable partner</em>. We carefully monitor all processes 
+              Thanks to the experience we have gained over the years and the reliable relationships we have created,
+              we are known in the Azerbaijan market as a <em>reliable partner</em>. We carefully monitor all processes
               from the selection of each automobile to its delivery and consider customer satisfaction a priority.
             </p>
             <p>
-              Today, as Autonova, we have successfully completed the sale of <strong>more than 500 automobiles</strong> and 
+              Today, as Autonova, we have successfully completed the sale of <strong>more than 500 automobiles</strong> and
               have gained the trust of our customers. In the future, we will continue to strengthen our leading position in this field.
             </p>
           </>

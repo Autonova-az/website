@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import AutomobileCard from '@/components/AutomobileCard'
 import AutomobileFilters from '@/components/AutomobileFilters'
 import AutomobilePagination from '@/components/AutomobilePagination'
@@ -9,7 +8,6 @@ import styles from './automobiles.module.css'
 import BASE_URL from '@/utils/baseurl'
 
 export default function AutomobilesClient({ locale }) {
-  const searchParams = useSearchParams()
   const [cars, setCars] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -76,7 +74,6 @@ export default function AutomobilesClient({ locale }) {
             brandId: car.brand?.id,
             year: car.year || 2024,
             price: car.price || 0,
-            vin: car.vin,
             description: car.description || '',
             inStock: car.inStock !== undefined ? car.inStock : true,
             departure_date: car.departure_date,
