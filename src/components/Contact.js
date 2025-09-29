@@ -22,7 +22,7 @@ export default function Contact({ locale = 'az' }) {
       } catch (error) {
         console.error('Error fetching interest areas:', error);
         // Fallback to default options if API fails
-      
+
         setInterestAreas(fallbackAreas[locale]);
       } finally {
         setLoading(false);
@@ -47,7 +47,7 @@ export default function Contact({ locale = 'az' }) {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/contact/submit', {
+      const response = await fetch(`${BASE_URL}/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
