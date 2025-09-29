@@ -1,0 +1,982 @@
+.routeMapContainer {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #1e40af 50%, #3b82f6 75%, #0ea5e9 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem 0;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(59, 130, 246, 0.15);
+}
+
+.routeMapContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.title i {
+  color: #fbbf24;
+}
+
+.routeName {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* Journey Tracking Message */
+.trackingMessage {
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #fbbf24;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+.trackingIcon {
+  font-size: 1.2rem;
+  animation: pulse 2s infinite;
+}
+
+/* Journey Status Badge */
+.journeyStatusBadge {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.statusBadge.completed {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.4);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+}
+
+.statusBadge.inProgress {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.4);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  animation: progressPulse 2s infinite;
+}
+
+.statusBadge.pending {
+  background: rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+  border-color: rgba(148, 163, 184, 0.4);
+  box-shadow: 0 0 20px rgba(148, 163, 184, 0.2);
+}
+
+@keyframes progressPulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+  }
+}
+
+/* Statistics Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.statIcon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #1e293b;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+}
+
+.statContent {
+  flex: 1;
+}
+
+.statValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+/* Progress Section */
+.progressSection {
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.progressLabel {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.progressPercentage {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fbbf24;
+}
+
+.progressBar {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  border-radius: 6px;
+  transition: width 0.8s ease;
+  position: relative;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+}
+
+.progressFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Current Location Card */
+.currentLocationCard {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.currentLocationHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #ffd700;
+}
+
+.currentLocationHeader i {
+  font-size: 1.2rem;
+  color: #fbbf24;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.currentLocationContent h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.currentLocationContent p {
+  margin: 0.25rem 0;
+  opacity: 0.9;
+}
+
+.locationDetails {
+  font-style: italic;
+  opacity: 0.8 !important;
+}
+
+.completedMessage,
+.pendingMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.completedMessage {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.completedMessage i {
+  font-size: 1.1rem;
+  animation: completedBounce 2s infinite;
+}
+
+.pendingMessage {
+  background: rgba(156, 163, 175, 0.15);
+  color: #9ca3af;
+  border: 1px solid rgba(156, 163, 175, 0.3);
+}
+
+.pendingMessage i {
+  animation: pendingSpin 3s linear infinite;
+}
+
+@keyframes completedBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+@keyframes pendingSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  z-index: 1;
+}
+
+.timelineTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timelineTitle i {
+  color: #fbbf24;
+}
+
+.timelineContainer {
+  position: relative;
+}
+
+.timelineItem {
+  display: flex;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.timelineItem:last-child {
+  margin-bottom: 0;
+}
+
+.timelineMarker {
+  position: relative;
+  margin-right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timelineIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.timelineItem.completed .timelineIcon {
+  background: #4ade80;
+  color: white;
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
+}
+
+.timelineItem.current .timelineIcon {
+  background: #fbbf24;
+  color: #1e293b;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+  animation: currentPulse 2s infinite;
+}
+
+.timelineItem.upcoming .timelineIcon {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+@keyframes currentPulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+  }
+  50% { 
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.8);
+  }
+}
+
+.timelineLine {
+  width: 3px;
+  height: 60px;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.timelineItem.completed .timelineLine {
+  background: linear-gradient(to bottom, #4ade80, rgba(74, 222, 128, 0.3));
+}
+
+.timelineItem.current .timelineLine {
+  background: linear-gradient(to bottom, #fbbf24, rgba(251, 191, 36, 0.3));
+}
+
+.timelineItem.upcoming .timelineLine {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.timelineContent {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.timelineItem.current .timelineContent {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
+  box-shadow: 0 5px 20px rgba(251, 191, 36, 0.2);
+}
+
+.timelineHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.stopName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.timelineStatus {
+  display: flex;
+  align-items: center;
+}
+
+.statusCompleted,
+.statusCurrent,
+.statusUpcoming {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusCompleted {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.statusCurrent {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.statusUpcoming {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stopDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stopLocation,
+.stopDescription {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.stopLocation i,
+.stopDescription i {
+  color: #fbbf24;
+  width: 16px;
+}
+
+.stopTiming {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.timingItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.timingItem i {
+  color: #fbbf24;
+  width: 14px;
+}
+
+/* Interactive Map Section */
+.interactiveMapSection {
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.mapSectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mapSectionTitle i {
+  color: #fbbf24;
+}
+
+.mapGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.mapCard {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.mapCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.mapPreview {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.mapThumbnail {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mapThumbnail:hover {
+  transform: scale(1.05);
+}
+
+.mapOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+  color: white;
+  font-weight: 600;
+}
+
+.mapThumbnail:hover .mapOverlay {
+  opacity: 1;
+}
+
+.mapOverlay i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.mapIcon {
+  font-size: 3rem;
+  color: #fbbf24;
+  z-index: 1;
+  position: relative;
+}
+
+.mapGradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.mapInfo {
+  padding: 1.5rem;
+}
+
+.mapInfo h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: white;
+}
+
+.mapInfo p {
+  margin: 0 0 1rem 0;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.mapMeta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mapType,
+.mapTypeCurrent,
+.mapTime {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.mapType {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.mapTypeCurrent {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  animation: currentPulse 2s infinite;
+}
+
+.mapTime {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Map Button in Timeline */
+.mapButton {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mapButton:hover {
+  background: rgba(251, 191, 36, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
+}
+
+/* Map Modal */
+.mapModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.mapModalContent {
+  background: white;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.mapModalHeader {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mapModalHeader h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.closeMapModal {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.closeMapModal:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.mapModalBody {
+  padding: 0;
+  max-height: calc(90vh - 100px);
+  overflow-y: auto;
+}
+
+.mapIframeContainer {
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+.mapIframeContainer iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+}
+
+.mapPlaceholder {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  color: #666;
+}
+
+.mapPlaceholder i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.mapModalInfo {
+  padding: 2rem;
+  background: #f8f9fa;
+}
+
+.mapModalLocation h4 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.mapModalLocation p {
+  margin: 0.25rem 0;
+  color: #666;
+}
+
+.mapModalDetails {
+  font-style: italic;
+  color: #888 !important;
+}
+
+.mapModalCoordinates {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.coordinateItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.coordinateLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.coordinateValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  font-family: 'Courier New', monospace;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .routeMapContainer {
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .statCard {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .statIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .statValue {
+    font-size: 1.5rem;
+  }
+
+  .timelineHeader {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stopTiming {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .timelineMarker {
+    margin-right: 1rem;
+  }
+
+  .timelineIcon {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .timelineLine {
+    height: 50px;
+  }
+
+  /* Map responsive styles */
+  .mapGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .mapCard {
+    margin-bottom: 1rem;
+  }
+
+  .mapPreview {
+    height: 150px;
+  }
+
+  .mapInfo {
+    padding: 1rem;
+  }
+
+  .mapMeta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mapModal {
+    padding: 1rem;
+  }
+
+  .mapModalContent {
+    max-height: 95vh;
+  }
+
+  .mapModalHeader {
+    padding: 1rem 1.5rem;
+  }
+
+  .mapModalHeader h3 {
+    font-size: 1.1rem;
+  }
+
+  .mapIframeContainer {
+    height: 300px;
+  }
+
+  .mapModalInfo {
+    padding: 1.5rem;
+  }
+
+  .mapModalCoordinates {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .mapButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}

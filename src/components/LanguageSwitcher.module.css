@@ -1,0 +1,100 @@
+.languageSwitcher {
+  position: relative;
+  display: inline-block;
+}
+
+.currentLang {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+  min-width: 80px;
+  justify-content: space-between;
+}
+
+.currentLang:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.flag {
+  font-size: 1rem;
+}
+
+.langCode {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.currentLang i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.rotated {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.langOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.langOption:hover {
+  background: #f8f9fa;
+}
+
+.langOption.active {
+  background: #007bff;
+  color: white;
+}
+
+.langName {
+  font-weight: 500;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .currentLang {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .dropdown {
+    min-width: 100px;
+  }
+  
+  .langOption {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}

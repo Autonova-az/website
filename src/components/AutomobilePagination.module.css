@@ -1,0 +1,243 @@
+/* Pagination Container */
+.paginationContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 3rem 2rem;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.08);
+  border: 1px solid #e2e8f0;
+  margin-top: 2rem;
+}
+
+.paginationInfo {
+  font-size: 1rem;
+  color: #475569;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Main Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pageNumbers {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Page Buttons */
+.pageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  border: 2px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 50px;
+  height: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.pageBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-color: #3b82f6;
+  color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+}
+
+.pageBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Number Buttons */
+.numberBtn {
+  min-width: 50px;
+  padding: 1rem;
+}
+
+.numberBtn.active {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+.numberBtn.active:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+}
+
+/* Ellipsis */
+.ellipsis {
+  cursor: default !important;
+  background: transparent !important;
+  border: none !important;
+  color: #9ca3af !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.ellipsis:hover {
+  background: transparent !important;
+  border: none !important;
+  color: #9ca3af !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Previous/Next Buttons */
+.prevBtn,
+.nextBtn {
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+}
+
+.prevBtn:hover:not(:disabled),
+.nextBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border-color: #3b82f6;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.3);
+}
+
+/* Quick Jump */
+.quickJump {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.jumpInput {
+  width: 70px;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.jumpInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .paginationContainer {
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .pageNumbers {
+    order: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .prevBtn,
+  .nextBtn {
+    order: 2;
+    flex: 1;
+    min-width: 120px;
+    max-width: 150px;
+  }
+
+  .prevBtn {
+    order: 0;
+  }
+
+  .quickJump {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .paginationContainer {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .pageBtn {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .numberBtn {
+    min-width: 40px;
+    padding: 0.75rem;
+  }
+
+  .prevBtn,
+  .nextBtn {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .pageNumbers {
+    gap: 0.25rem;
+  }
+
+  .pagination {
+    gap: 0.5rem;
+  }
+
+  .paginationInfo {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .quickJump {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .jumpInput {
+    width: 60px;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+}
