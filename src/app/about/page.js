@@ -17,7 +17,7 @@ export async function generateMetadata({ searchParams }) {
 
 async function getAboutData(locale) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/api'
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const response = await fetch(`${baseUrl}/about?locale=${locale}`, {
       cache: 'no-store' // Ensure fresh data on each request
     })

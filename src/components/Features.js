@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import styles from './Features.module.css'
 import { getTranslation } from '@/locales/translations'
+import BASE_URL from "@/utils/baseurl";
 
 // Convert Heroicon names to FontAwesome equivalents
 const convertHeroiconToFontAwesome = (heroicon) => {
@@ -47,7 +48,7 @@ const getActionText = (route, locale = 'az') => {
 // Fetch features data on server side
 async function getFeatures(locale = 'az') {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/advantages?locale=${locale}`, {
+    const response = await fetch(`${BASE_URL}/advantages?locale=${locale}`, {
       cache: 'no-store' // Disable caching for fresh data
     })
 
