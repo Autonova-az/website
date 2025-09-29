@@ -12,6 +12,7 @@ async function getBrands(locale = 'az') {
     })
 
     if (!response.ok) {
+      console.error(response)
       throw new Error('Failed to fetch features')
     }
 
