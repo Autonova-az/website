@@ -59,7 +59,7 @@ export default async function AutomobileDetailPage({ params, searchParams }) {
     <AutomobileDetailClient
       id={resolvedParams.id}
       locale={locale}
-      initialData={null }
+      initialData={automobileData }
     />
   )
 }
