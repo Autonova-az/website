@@ -38,9 +38,10 @@ export default function Gallery({ locale = 'az', automobilies }) {
                     {car.features?.length > 0 && (
                         <div className={styles.carFeatures}>
                           {car.features.map((feature) => (
-                              <span key={feature.id} className={styles.feature}>
-                        <i className={feature.icon}></i> {feature.name}
-                      </span>
+                              <div key={feature.id} className={styles.featureChip}>
+                                <i className={feature.icon}></i>
+                                <span>{feature.name}</span>
+                              </div>
                           ))}
                         </div>
                     )}
