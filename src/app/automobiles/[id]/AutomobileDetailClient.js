@@ -33,6 +33,7 @@ export default function AutomobileDetailClient({ id, locale = 'az', initialData 
       location: apiData.location,
       current_location: apiData.current_location,
       departure_date: apiData.departure_date,
+      expected_arrival_time: apiData.expected_arrival_time,
       route: apiData.route,
       journey_tracking: apiData.journey_tracking,
       journey_started: apiData.journey_started,
