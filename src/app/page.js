@@ -5,29 +5,52 @@ import Brands from '@/components/Brands'
 import Services from '@/components/Services'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
-import { getServerLocale } from '@/utils/locale'
+import {getServerLocale} from '@/utils/locale'
 import BASE_URL from "@/utils/baseurl";
 
 export const dynamic = "force-dynamic";
 
 
-
-export default async function Home({ searchParams }) {
-  const locale = await getServerLocale(searchParams)
+export default async function Home({searchParams}) {
+    const locale = await getServerLocale(searchParams)
     const features = await getFeatures(locale)
     const brands = await getBrands(locale)
+    const automobilies = await getAutomobiles(locale)
+    return (
+        <>
+            <Hero locale={locale}/>
+            <Features features={features} locale={locale}/>
+            <Gallery automobilies={automobilies}  locale={locale}/>
+            <Brands locale={locale} brands={brands}/>
+            <Services locale={locale}/>
+            <Contact locale={locale}/>
+            <Footer locale={locale}/>
+        </>
+    )
+}
 
-  return (
-    <>
-      <Hero locale={locale} />
-      <Features features={features}  locale={locale} />
-      <Gallery locale={locale} />
-      <Brands locale={locale} brands={brands} />
-      <Services locale={locale} />
-      <Contact locale={locale} />
-      <Footer locale={locale} />
-    </>
-  )
+
+async function getAutomobiles(locale) {
+    try {
+        const response = await fetch(`${BASE_URL}/automobiles?locale=${locale}`, {
+            cache: 'no-store'
+        })
+
+        if (!response.ok) {
+            console.error(response)
+            throw new Error('Failed to fetch features')
+        }
+
+        const data = await response.json()
+
+        if (data.success) {
+            return data.data;
+        }
+
+        return []
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 async function getBrands(locale = 'az') {
