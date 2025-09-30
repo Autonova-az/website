@@ -9,7 +9,7 @@ export default function AboutStoryContent({ apiContent , searchParams}) {
   const [locale, setLocale] = useState('az')
 
   useEffect(() => {
-    const currentLocale = searchParams.get('locale') || getClientLocale()
+    const currentLocale = searchParams?.locale || getClientLocale()
     setLocale(currentLocale)
   }, [searchParams])
 

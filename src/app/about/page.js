@@ -4,60 +4,101 @@ import { getTranslation } from '@/locales/translations'
 import { getServerLocale } from '@/utils/locale'
 import AboutStoryContent from '@/components/AboutStoryContent'
 import styles from './about.module.css'
+import BASE_URL from "@/utils/baseurl";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ searchParams }) {
-  const locale = await getServerLocale(searchParams)
-  const t = (key) => getTranslation(locale, key)
+  try {
+    console.log("[Metadata] searchParams:", searchParams)
+    const locale = await getServerLocale(searchParams)
+    console.log("[Metadata] resolved locale:", locale)
 
-  return {
-    title: `${t('about.title')} - Autonova`,
-    description: t('about.subtitle'),
+    const t = (key) => getTranslation(locale, key)
+
+    return {
+      title: `${t('about.title')} - Autonova`,
+      description: t('about.subtitle'),
+    }
+  } catch (err) {
+    console.error("[Metadata] error:", err)
+    return {}
   }
 }
 
 async function getAboutData(locale) {
+  const url = `${BASE_URL}/about?locale=${locale}`
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://admin-dev.autonova.az/api"
-    const response = await fetch(`${baseUrl}/about?locale=${locale}`, {
-      cache: 'no-store' // Ensure fresh data on each request
+    console.log("[AboutData] Fetching:", url)
+
+    const response = await fetch(url, {
+      cache: 'no-store',
+      next: { revalidate: 0 }
     })
 
+    console.log("[AboutData] Response status:", response.status)
+
     if (!response.ok) {
-      throw new Error('Failed to fetch about data')
+      throw new Error(`[AboutData] Failed with status ${response.status}`)
     }
 
     const result = await response.json()
+    console.log("[AboutData] API result:", result)
+
     return result.data
   } catch (error) {
-    console.error('Error fetching about data:', error)
+    console.error("[AboutData] error fetching:", error)
     return null
   }
 }
 
 export default async function About({ searchParams }) {
+  console.log("[About] initial searchParams:", searchParams)
+
   const locale = await getServerLocale(searchParams)
+  console.log("[About] resolved locale:", locale)
+
   const aboutData = await getAboutData(locale)
+  console.log("[About] aboutData:", aboutData)
 
-  const t = (key) => getTranslation(locale, key)
+  const t = (key) => {
+    try {
+      const value = getTranslation(locale, key)
+      if (!value) console.warn(`[Translation] Missing key: ${key}`)
+      return value
+    } catch (err) {
+      console.error(`[Translation] error resolving key: ${key}`, err)
+      return key
+    }
+  }
 
-  // Use API data for stats if available
-  const stats = aboutData?.aboutData?.[0]?.statistics?.map(stat => ({
-    icon: "fas fa-chart-line",
-    number: parseInt(stat.number),
-    label: stat.label,
-    suffix: stat.suffix || ""
-  })) || [];
+  // Stats
+  const stats = aboutData?.aboutData?.[0]?.statistics?.map(stat => {
+    console.log("[Stats] mapping stat:", stat)
+    return {
+      icon: "fas fa-chart-line",
+      number: parseInt(stat.number),
+      label: stat.label,
+      suffix: stat.suffix || ""
+    }
+  }) || []
+  console.log("[Stats] final:", stats)
 
-  // Use API data for team members if available
-  const teamMembers = aboutData?.teamMembers?.map(member => ({
-    name: member.name,
-    position: member.position,
-    description: member.bio,
-    image: member.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300",
-    linkedin: member.linkedin,
-    phone: member.phone
-  })) || [];
+  // Team members
+  const teamMembers = aboutData?.teamMembers?.map(member => {
+    console.log("[Team] mapping member:", member)
+    return {
+      name: member.name,
+      position: member.position,
+      description: member.bio,
+      image: member.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300",
+      linkedin: member.linkedin,
+      phone: member.phone
+    }
+  }) || []
+  console.log("[Team] final:", teamMembers)
 
+  // Values (static from translations)
   const values = [
     {
       icon: "fas fa-star",
@@ -80,6 +121,7 @@ export default async function About({ searchParams }) {
       description: t('about.values.transparency.description')
     }
   ]
+  console.log("[Values] final:", values)
 
   return (
     <>

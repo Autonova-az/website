@@ -2,7 +2,6 @@ import Link from 'next/link'
 import styles from './WhyChooseUs.module.css'
 
 export default function WhyChooseUs({data}) {
- 
 
   return (
     <section className={styles.features}>

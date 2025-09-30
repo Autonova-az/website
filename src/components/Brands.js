@@ -5,37 +5,9 @@ import { getTranslation } from '@/locales/translations'
 import BASE_URL from '@/utils/baseurl'
 
 // Fetch features data on server side
-async function getBrands(locale = 'az') {
-  try {
-    const response = await fetch(`${BASE_URL}/brands?locale=${locale}`, {
-      cache: 'no-store'
-    })
 
-    if (!response.ok) {
-      console.error(response)
-      throw new Error('Failed to fetch features')
-    }
 
-    const data = await response.json()
-
-    if (data.success) {
-      return data.data.map((item, index) => ({
-        id: item.id,
-        name: item.name,
-        logo: item.logo,
-        automobilesCount: item.automobiles_count
-      }))
-    }
-
-    return []
-  } catch (error) {
-    console.error('Error fetching features:', error)
-  }
-}
-
-export default async function Brands({ locale = 'az' }) {
-
-  const brands = await getBrands(locale)
+export default async function Brands({ locale = 'az' , brands}) {
 
   const stats = [
     { number: "15+", label: getTranslation(locale, 'brands.stats.brands') },

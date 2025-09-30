@@ -34,6 +34,16 @@ const nextConfig = {
                 pathname: '/autonova/**',
             },
 
+            {
+                protocol: 'https',
+                hostname: 'minio-dev.autonova.az',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'minio.autonova.az',
+                pathname: '/**',
+            },
         ],
     },
 };

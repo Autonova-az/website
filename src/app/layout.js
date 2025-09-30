@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.variable} font-sans`}>
       <Suspense fallback={<div>Loading navbar...</div>}>
+          {/*//TODO navbari her ekranda ayrica qoy searhcparams otur*/}
           <Navbar />
       </Suspense>
         {children}

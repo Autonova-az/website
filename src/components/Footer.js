@@ -2,18 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
 import { getTranslation } from '@/locales/translations'
 import { getClientLocale } from '@/utils/locale'
 import styles from './Footer.module.css'
 
-export default function Footer() {
+export default function Footer({searchParams}) {
   const currentYear = new Date().getFullYear()
-  const searchParams = useSearchParams()
   const [locale, setLocale] = useState('az')
 
   useEffect(() => {
-    const currentLocale = searchParams.get('locale') || getClientLocale()
+    const currentLocale = searchParams?.locale || getClientLocale()
     setLocale(currentLocale)
   }, [searchParams])
 
@@ -21,7 +19,7 @@ export default function Footer() {
 
   const createLocalizedLink = (href) => {
     if (href.startsWith('#')) return href
-    
+
     const params = new URLSearchParams(searchParams)
     if (locale !== 'az') {
       params.set('locale', locale)
@@ -55,7 +53,7 @@ export default function Footer() {
       ]
     },
     {
-      title: t('footer.services.title'), 
+      title: t('footer.services.title'),
       type: "links",
       links: [
         { text: t('footer.services.carSales'), href: "/services" },

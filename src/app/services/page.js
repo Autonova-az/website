@@ -17,9 +17,7 @@ export const metadata = {
 export default async function ServicesPage({searchParams}) {
    const locale = await getServerLocale(searchParams)
    const servicesResponse = await fetch(`${BASE_URL}/content?locale=${locale}`)
- const data = await servicesResponse.json()
-
-  console.log(data)
+   const data = await servicesResponse.json()
 
   return (
     <>
@@ -29,7 +27,7 @@ export default async function ServicesPage({searchParams}) {
       <ProcessSection data={data.data.work_processes}  />
       <TestimonialsSection />
       <FAQ data={data.data.faqs}  />
-      <Footer />
+      <Footer searchParams={searchParams} />
     </>
   )
 }
