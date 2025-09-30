@@ -3,11 +3,15 @@ import { translations } from '@/locales/translations'
 import AutomobileDetailClient from './AutomobileDetailClient'
 import BASE_URL from '@/utils/baseurl'
 
+
+export const dynamic = "force-dynamic";
+
 // Fetch automobile data on server side
 async function fetchAutomobile(id, locale) {
   try {
     const response = await fetch(`${BASE_URL}/automobiles/${id}?locale=${locale}`, {
-      cache: 'no-store' // Ensure fresh data
+      cache: 'no-store', // Ensure fresh data,
+      next: { revalidate: 0 }
     })
 
     if (!response.ok) {
@@ -38,13 +42,13 @@ export async function generateMetadata({ params, searchParams }) {
   if (carData) {
     return {
       title: `${carData.name} - ${carData.brand?.name || ''} - Autonova`,
-      description: carData.brand?.description || t.automobileDetail?.notFoundMessage || 'Avtomobilin ətraflı məlumatları və xüsusiyyətləri',
+      description: carData.brand?.description || t?.automobileDetail?.notFoundMessage || 'Avtomobilin ətraflı məlumatları və xüsusiyyətləri',
     }
   }
 
   return {
-    title: `${t.automobileDetail?.notFound || 'Avtomobil Detalları'} - Autonova`,
-    description: t.automobileDetail?.notFoundMessage || 'Avtomobilin ətraflı məlumatları və xüsusiyyətləri',
+    title: `${t?.automobileDetail?.notFound || 'Avtomobil Detalları'} - Autonova`,
+    description: t?.automobileDetail?.notFoundMessage || 'Avtomobilin ətraflı məlumatları və xüsusiyyətləri',
   }
 }
 

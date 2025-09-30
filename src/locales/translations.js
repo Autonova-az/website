@@ -1226,7 +1226,6 @@ export const translations = {
 }
 
 export const getTranslation = (locale, key) => {
-try{
   const keys = key.split('.')
   let translation = translations[locale] || translations.az
 
@@ -1235,7 +1234,5 @@ try{
     if (!translation) break
   }
 
-  return translation || key
-}catch(error){}
-  return ''
+  return translation || key;
 }
