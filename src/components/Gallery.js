@@ -46,7 +46,7 @@ export default function Gallery({ locale = 'az', automobilies }) {
                         </div>
                     )}
 
-                    <div className={styles.galleryActions}>
+                    <div  className={styles.galleryActions}>
                       <Link
                           href={`/automobiles/${car.id}`}
                           className={`${styles.actionBtn} ${styles.primary}`}
