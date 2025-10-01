@@ -5,6 +5,7 @@ import { getServerLocale } from '@/utils/locale'
 import AboutStoryContent from '@/components/AboutStoryContent'
 import styles from './about.module.css'
 import BASE_URL from "@/utils/baseurl";
+import Navbar from "@/components/Navbar";
 
 export const dynamic = "force-dynamic";
 
@@ -112,7 +113,7 @@ export default async function About({ searchParams }) {
 
   return (
     <>
-
+      <Navbar searchParams={searchParams} locale={locale}/>
       {/* Page Header */}
       <section className={styles.pageHeader}>
         <div className="container">

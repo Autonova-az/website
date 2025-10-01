@@ -2,22 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { getTranslation } from '@/locales/translations'
 import { getClientLocale } from '@/utils/locale'
 import LanguageSwitcher from './LanguageSwitcher'
 
-export default function Navbar() {
+export default function Navbar({locale, searchParams}) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [locale, setLocale] = useState('az')
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
 
-  useEffect(() => {
-    const currentLocale = searchParams.get('locale') || getClientLocale()
-    setLocale(currentLocale)
-  }, [searchParams])
+  const pathname = usePathname()
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,6 +40,18 @@ export default function Navbar() {
     return queryString ? `${href}?${queryString}` : href
   }
 
+  const createLocalizedLink2 = (href) => {
+    const params = new URLSearchParams()
+    if (locale !== 'az') {
+      params.set('locale', locale)
+    } else {
+      params.delete('locale')
+    }
+    const queryString = params.toString()
+    return queryString ? `${href}?${queryString}` : href
+  }
+
+
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
@@ -60,7 +67,7 @@ export default function Navbar() {
 
         <ul className={`nav-menu ${isMobileMenuOpen ? 'active' : ''}`}>
           <li className="nav-item">
-            <Link href={createLocalizedLink('/')} className={`nav-link ${pathname === '/' ? 'active' : ''}`}>
+            <Link href={createLocalizedLink2('/')} className={`nav-link ${pathname === '/' ? 'active' : ''}`}>
               <span className="nav-text">{t('nav.home')}</span>
               <div className="nav-indicator"></div>
             </Link>
@@ -78,19 +85,19 @@ export default function Navbar() {
             </a>
           </li> */}
           <li className="nav-item">
-            <Link href={createLocalizedLink('/services')} className={`nav-link ${pathname === '/services' ? 'active' : ''}`}>
+            <Link href={createLocalizedLink2('/services')} className={`nav-link ${pathname === '/services' ? 'active' : ''}`}>
               <span className="nav-text">{t('nav.services')}</span>
               <div className="nav-indicator"></div>
             </Link>
           </li>
           <li className="nav-item">
-            <Link href={createLocalizedLink('/about')} className={`nav-link ${pathname === '/about' ? 'active' : ''}`}>
+            <Link href={createLocalizedLink2('/about')} className={`nav-link ${pathname === '/about' ? 'active' : ''}`}>
               <span className="nav-text">{t('nav.about')}</span>
               <div className="nav-indicator"></div>
             </Link>
           </li>
           <li className="nav-item">
-            <a href={createLocalizedLink('/#contact')} className="nav-link nav-cta">
+            <a href={createLocalizedLink2('/#contact')} className="nav-link nav-cta">
               <i className="fas fa-phone-alt"></i>
               <span className="nav-text">{t('nav.contact')}</span>
             </a>
@@ -98,12 +105,12 @@ export default function Navbar() {
         </ul>
 
         <div className="nav-actions">
-          <Link href={createLocalizedLink('/search')} className="search-btn">
+          <Link href={createLocalizedLink2('/search')} className="search-btn">
             <i className="fas fa-search"></i>
             <span className="search-text">{t('nav.search')}</span>
           </Link>
           <LanguageSwitcher />
-          <div 
+          <div
             className={`hamburger ${isMobileMenuOpen ? 'active' : ''}`}
             onClick={toggleMobileMenu}
           >

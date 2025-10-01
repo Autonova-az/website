@@ -7,6 +7,7 @@ import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import {getServerLocale} from '@/utils/locale'
 import BASE_URL from "@/utils/baseurl";
+import Navbar from '@/components/Navbar'
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ export default async function Home({searchParams}) {
     const automobilies = await getAutomobiles(locale)
     return (
         <>
+            <Navbar locale={locale} searchParams={searchParams} />
             <Hero locale={locale}/>
             <Features features={features} locale={locale}/>
             <Gallery automobilies={automobilies}  locale={locale}/>

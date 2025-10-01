@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import styles from './ServicesHero.module.css'
+import { getTranslation } from '@/locales/translations'
 
-export default function ServicesHero() {
+export default function ServicesHero({ locale = 'az' }) {
   const [counters, setCounters] = useState({
     cars: 0,
     satisfaction: 0,
@@ -48,44 +49,43 @@ export default function ServicesHero() {
         <div className={styles.heroMain}>
           <div className={styles.heroBadge}>
             <i className="fas fa-cogs"></i>
-            <span>Professional Avtomobil Xidmətləri</span>
+            <span>{getTranslation(locale, 'servicesHero.badge')}</span>
           </div>
 
           <h1 className={styles.heroTitle}>
-            <span className={styles.titleLine} data-text="Avtomobil">Avtomobil</span>
-            <span className={styles.titleLine} data-text="Xidmətlərində">Xidmətlərində</span>
-            <span className={`${styles.titleLine} ${styles.highlight}`} data-text="Liderik">Liderik</span>
+            <span className={styles.titleLine} data-text={getTranslation(locale, 'servicesHero.title.line1')}>{getTranslation(locale, 'servicesHero.title.line1')}</span>
+            <span className={styles.titleLine} data-text={getTranslation(locale, 'servicesHero.title.line2')}>{getTranslation(locale, 'servicesHero.title.line2')}</span>
+            <span className={`${styles.titleLine} ${styles.highlight}`} data-text={getTranslation(locale, 'servicesHero.title.line3')}>{getTranslation(locale, 'servicesHero.title.line3')}</span>
           </h1>
 
           <p className={styles.heroDescription}>
-            Çindən avtomobil idxalından tutmuş satış sonrası xidmətlərə qədər
-            <strong> tam spektrli həllər</strong> və <strong>professional dəstək</strong> təqdim edirik.
+            {getTranslation(locale, 'servicesHero.description')}
           </p>
 
           <div className={styles.heroFeatures}>
             <div className={styles.featurePill}>
               <i className="fas fa-car"></i>
-              <span>Avtomobil Satışı</span>
+              <span>{getTranslation(locale, 'servicesHero.features.sales')}</span>
             </div>
             <div className={styles.featurePill}>
               <i className="fas fa-tools"></i>
-              <span>Texniki Xidmət</span>
+              <span>{getTranslation(locale, 'servicesHero.features.technical')}</span>
             </div>
             <div className={styles.featurePill}>
               <i className="fas fa-file-contract"></i>
-              <span>Sənədləşdirmə</span>
+              <span>{getTranslation(locale, 'servicesHero.features.documentation')}</span>
             </div>
           </div>
 
           <div className={styles.heroButtons}>
             <a href="#services" className="btn btn-primary">
               <i className="fas fa-cogs"></i>
-              <span>Xidmətləri Görün</span>
+              <span>{getTranslation(locale, 'servicesHero.buttons.viewServices')}</span>
               <div className="btn-shine"></div>
             </a>
             <a href="#contact" className="btn btn-secondary">
               <i className="fas fa-phone-alt"></i>
-              <span>Bizimlə Əlaqə</span>
+              <span>{getTranslation(locale, 'servicesHero.buttons.contact')}</span>
             </a>
           </div>
         </div>
@@ -100,7 +100,7 @@ export default function ServicesHero() {
             <div className={styles.statContent}>
               <span className={styles.statNumber}>{counters.cars}</span>
               <span className={styles.statPlus}>+</span>
-              <span className={styles.statLabel}>Satılmış Avtomobil</span>
+              <span className={styles.statLabel}>{getTranslation(locale, 'servicesHero.stats.cars')}</span>
             </div>
           </div>
 
@@ -111,7 +111,7 @@ export default function ServicesHero() {
             <div className={styles.statContent}>
               <span className={styles.statNumber}>{counters.satisfaction}</span>
               <span className={styles.statPlus}>%</span>
-              <span className={styles.statLabel}>Müştəri Məmnuniyyəti</span>
+              <span className={styles.statLabel}>{getTranslation(locale, 'servicesHero.stats.satisfaction')}</span>
             </div>
           </div>
 
@@ -122,7 +122,7 @@ export default function ServicesHero() {
             <div className={styles.statContent}>
               <span className={styles.statNumber}>{counters.experience}</span>
               <span className={styles.statPlus}>+</span>
-              <span className={styles.statLabel}>İl Təcrübə</span>
+              <span className={styles.statLabel}>{getTranslation(locale, 'servicesHero.stats.experience')}</span>
             </div>
           </div>
 
@@ -133,14 +133,14 @@ export default function ServicesHero() {
             <div className={styles.statContent}>
               <span className={styles.statNumber}>24/7</span>
               <span className={styles.statPlus}></span>
-              <span className={styles.statLabel}>Dəstək Xidməti</span>
+              <span className={styles.statLabel}>{getTranslation(locale, 'servicesHero.stats.support')}</span>
             </div>
           </div>
         </div>
       </div>
 
       <div className={styles.scrollIndicator}>
-        <div className={styles.scrollText}>Aşağı Keç</div>
+        <div className={styles.scrollText}>{getTranslation(locale, 'servicesHero.scroll')}</div>
         <div className={styles.scrollArrow}>
           <i className="fas fa-chevron-down"></i>
         </div>

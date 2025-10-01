@@ -206,6 +206,32 @@ export const translations = {
         infoButton: 'Ətraflı Məlumat'
       }
     },
+    // Services Hero
+    servicesHero: {
+      badge: 'Professional Avtomobil Xidmətləri',
+      title: {
+        line1: 'Avtomobil',
+        line2: 'Xidmətlərində',
+        line3: 'Liderik'
+      },
+      description: 'Çindən avtomobil idxalından tutmuş satış sonrası xidmətlərə qədər tam spektrli həllər və professional dəstək təqdim edirik.',
+      features: {
+        sales: 'Avtomobil Satışı',
+        technical: 'Texniki Xidmət',
+        documentation: 'Sənədləşdirmə'
+      },
+      buttons: {
+        viewServices: 'Xidmətləri Görün',
+        contact: 'Bizimlə Əlaqə'
+      },
+      stats: {
+        cars: 'Satılmış Avtomobil',
+        satisfaction: 'Müştəri Məmnuniyyəti',
+        experience: 'İl Təcrübə',
+        support: 'Dəstək Xidməti'
+      },
+      scroll: 'Aşağı Keç'
+    },
     // Contact
     contact: {
       sectionBadge: 'Bizimlə Əlaqə',
@@ -639,6 +665,32 @@ export const translations = {
         infoButton: 'Подробная Информация'
       }
     },
+    // Services Hero
+    servicesHero: {
+      badge: 'Профессиональные Автомобильные Услуги',
+      title: {
+        line1: 'Лидеры',
+        line2: 'в Автомобильных',
+        line3: 'Услугах'
+      },
+      description: 'Предоставляем полный спектр решений и профессиональную поддержку от импорта автомобилей из Китая до послепродажного обслуживания.',
+      features: {
+        sales: 'Продажа Автомобилей',
+        technical: 'Техническое Обслуживание',
+        documentation: 'Документооборот'
+      },
+      buttons: {
+        viewServices: 'Посмотреть Услуги',
+        contact: 'Связаться с Нами'
+      },
+      stats: {
+        cars: 'Проданных Автомобилей',
+        satisfaction: 'Удовлетворенность Клиентов',
+        experience: 'Лет Опыта',
+        support: 'Служба Поддержки'
+      },
+      scroll: 'Прокрутить Вниз'
+    },
     // Contact
     contact: {
       sectionBadge: 'Свяжитесь с Нами',
@@ -1071,6 +1123,32 @@ export const translations = {
         contactButton: 'Contact Now',
         infoButton: 'Detailed Information'
       }
+    },
+    // Services Hero
+    servicesHero: {
+      badge: 'Professional Automotive Services',
+      title: {
+        line1: 'Leaders',
+        line2: 'in Automotive',
+        line3: 'Services'
+      },
+      description: 'We provide comprehensive solutions and professional support from automobile import from China to after-sales services.',
+      features: {
+        sales: 'Automobile Sales',
+        technical: 'Technical Service',
+        documentation: 'Documentation'
+      },
+      buttons: {
+        viewServices: 'View Services',
+        contact: 'Contact Us'
+      },
+      stats: {
+        cars: 'Cars Sold',
+        satisfaction: 'Customer Satisfaction',
+        experience: 'Years Experience',
+        support: 'Support Service'
+      },
+      scroll: 'Scroll Down'
     },
     // Contact
     contact: {
