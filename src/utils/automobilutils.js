@@ -56,7 +56,7 @@ export const transformApiData = (apiData, locale) => {
 
 export const fetchAutomobile = async (id, locale, path) => {
     try {
-        const response = await fetch(`${BASE_URL}/${path}/vin/${id}?locale=${locale}`, {
+        const response = await fetch(`${BASE_URL}/${path}/${id}?locale=${locale}`, {
             cache: 'no-store', // Ensure fresh data,
             next: {revalidate: 0}
         })

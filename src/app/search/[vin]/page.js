@@ -15,7 +15,7 @@ export async function generateMetadata({params, searchParams}) {
     const t = translations[locale]
 
     // Fetch car data for metadata
-    const carData = await fetchAutomobile(resolvedParams.vin, locale)
+    const carData = await fetchAutomobile(resolvedParams.vin, locale,"automobiles/vin")
 
     if (carData) {
         return {
@@ -33,7 +33,7 @@ export async function generateMetadata({params, searchParams}) {
 export default async function AutomobileDetailPage({params, searchParams}) {
     const resolvedParams = await params
     const locale = await getServerLocale(searchParams)
-    const automobileData = await fetchAutomobile(resolvedParams.vin, locale, "automobiles")
+    const automobileData = await fetchAutomobile(resolvedParams.vin, locale, "automobiles/vin")
 
     return (
         <>
