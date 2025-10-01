@@ -160,7 +160,7 @@ export default function AutomobileDetailClient({id, locale = 'az', initialData})
             </>
         )
     }
-    console.log(car.brand)
+
     return (
         <>
 
@@ -255,7 +255,7 @@ export default function AutomobileDetailClient({id, locale = 'az', initialData})
                                         <div className={styles.outOfStockBadge}>Stokda yoxdur</div>
                                     )}
 
-                                  
+
                                 </div>
                             </div>
 
