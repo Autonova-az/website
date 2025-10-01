@@ -255,11 +255,7 @@ export default function AutomobileDetailClient({id, locale = 'az', initialData})
                                         <div className={styles.outOfStockBadge}>Stokda yoxdur</div>
                                     )}
 
-                                    {/* Zoom Hint */}
-                                    <div className={styles.zoomHint}>
-                                        <i className="fas fa-search-plus"></i>
-                                        Böyütmək üçün şəklin üzərinə gəlin
-                                    </div>
+                                  
                                 </div>
                             </div>
 
@@ -339,7 +335,7 @@ export default function AutomobileDetailClient({id, locale = 'az', initialData})
                                 </div>
                             </div>
 
-                            {/* Action Buttons */}
+                            {/* Action Buttons
                             <div className={styles.actions}>
                                 <button
                                     className={styles.primaryButton}
@@ -354,7 +350,7 @@ export default function AutomobileDetailClient({id, locale = 'az', initialData})
                                 >
                                     {t.automobileDetail?.actions?.contactDealer || 'Diler ilə əlaqə'}
                                 </button>
-                            </div>
+                            </div> */}
 
                             {/* Features */}
                             <div className={styles.features}>
