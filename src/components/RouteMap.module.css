@@ -114,11 +114,11 @@
 }
 
 @keyframes progressPulse {
-  0%, 100% { 
+  0%, 100% {
     transform: scale(1);
     box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
   }
-  50% { 
+  50% {
     transform: scale(1.05);
     box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
   }
@@ -407,11 +407,11 @@
 }
 
 @keyframes currentPulse {
-  0%, 100% { 
+  0%, 100% {
     transform: scale(1);
     box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
   }
-  50% { 
+  50% {
     transform: scale(1.1);
     box-shadow: 0 0 30px rgba(251, 191, 36, 0.8);
   }
@@ -980,3 +980,85 @@
     font-size: 0.85rem;
   }
 }
+
+
+
+
+
+
+/* ... existing styles ... */
+
+
+:root {
+  /* Colors */
+  --primary-color: #fbbf24; /* A vibrant yellow/orange for accents */
+  --secondary-color: #1e40af; /* A dark blue for deeper tones */
+  --accent-color: #0ea5e9; /* A light blue */
+
+  /* Backgrounds */
+  --bg-dark: #0f172a; /* Darkest background */
+  --bg-medium: #1e293b; /* Medium dark background */
+  --card-bg-light: rgba(255, 255, 255, 0.15); /* Light translucent background for cards */
+  --card-bg-hover: rgba(255, 255, 255, 0.2);
+
+  /* Text Colors */
+  --text-color-light: white;
+  --text-color-dark: #e2e8f0; /* Slightly off-white for better readability */
+  --text-color-strong: #f1f5f9; /* Stronger white for important text */
+  --text-color-muted: #94a3b8; /* Muted gray for less important text */
+  --text-color-success: #22c55e;
+  --text-color-warning: #fbbf24;
+  --text-color-info: #60a5fa;
+
+  /* Borders & Shadows */
+  --border-color-light: rgba(255, 255, 255, 0.2);
+  --border-color-dark: rgba(255, 255, 255, 0.3);
+  --border-radius: 15px;
+  --border-radius-small: 8px;
+
+  --shadow-small: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.2);
+  --shadow-large: 0 25px 50px rgba(0, 0, 0, 0.3);
+
+  /* Spacing (optional, but good practice) */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+}
+
+.journeyDates {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1rem;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--card-bg-light); /* Or your preferred background */
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-small);
+  border-left: 5px solid var(--primary-color); /* A subtle highlight */
+}
+
+.dateItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: var(--text-color-dark);
+}
+
+.dateItem i {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.dateItem strong {
+  font-weight: 600;
+  color: var(--text-color-strong);
+}
+
+/* Optional: Adjust header layout if needed */
+
+/* ... existing styles ... */

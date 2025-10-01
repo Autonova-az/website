@@ -68,9 +68,60 @@ const calculateJourneyStats = () => {
     totalDurationHours,
     journeyStarted,
     journeyCompleted,
+    formattedDepartureDate: formatDate(car.departure_date, locale),
+    formattedExpectedArrivalDate: formatDate(car.expected_arrival_time, locale),
   }
 }
 
+
+  const formatDate = (dateString, locale) => {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+
+    // Check for invalid date
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date string provided:", dateString);
+      return dateString; // Return original string or a fallback if date is invalid
+    }
+
+    const options = {
+      year: 'numeric',
+      month: '2-digit', // 'long' for "Sentyabr", 'short' for "Sen", '2-digit' for "09"
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23' // Ensures 24-hour format (00-23)
+    };
+
+    let formattedDate;
+    // Choose the locale string based on your 'locale' prop
+    const dateLocale = locale === 'az' ? 'az-Latn-AZ' : locale === 'ru' ? 'ru-RU' : 'en-US';
+
+    try {
+      formattedDate = date.toLocaleString(dateLocale, options);
+    } catch (error) {
+      console.error("Error formatting date with toLocaleString:", error);
+      // Fallback to a simpler format if toLocaleString fails for some reason
+      return date.toISOString().slice(0, 16).replace('T', ' '); // YYYY-MM-DD HH:MM
+    }
+
+    // Post-processing for Azerbaijani to get "D/M/YYYY HH:MM" if that's preferred
+    // Example for 'az': `09/27/2025 14:00` might become `27/09/2025 14:00`
+    if (locale === 'az' && formattedDate.includes('/')) {
+      const parts = formattedDate.split(' '); // e.g., ["09/27/2025", "14:00"]
+      if (parts.length === 2) {
+        const dateParts = parts[0].split('/'); // e.g., ["09", "27", "2025"]
+        if (dateParts.length === 3) {
+          // Rearrange to DD/MM/YYYY
+          return `${dateParts[1]}/${dateParts[0]}/${dateParts[2]} ${parts[1]}`;
+        }
+      }
+    }
+
+
+    return formattedDate;
+  };
 
   // Calculate progress percentage with journey status
 const calculateProgress = () => {
@@ -153,481 +204,492 @@ const calculateProgress = () => {
   }
 
   return (
-    <div className={styles.routeMapContainer}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>
-          <i className="fas fa-route"></i>
-          {t.routeProgress}
-        </h2>
-        <div className={styles.routeName}>{route.name}</div>
-
-        {/* Journey Status Badge */}
-        <div className={styles.journeyStatusBadge}>
-          {journeyStats.journeyCompleted ? (
-            <div className={`${styles.statusBadge} ${styles.completed}`}>
-              <i className="fas fa-check-circle"></i>
-              <span>{t.journeyCompleted || 'Səyahət Tamamlandı'}</span>
-            </div>
-          ) : journeyStats.journeyStarted ? (
-            <div className={`${styles.statusBadge} ${styles.inProgress}`}>
-              <i className="fas fa-shipping-fast"></i>
-              <span>{t.journeyInProgress || 'Səyahət Davam Edir'}</span>
-            </div>
-          ) : (
-            <div className={`${styles.statusBadge} ${styles.pending}`}>
-              <i className="fas fa-clock"></i>
-              <span>{t.journeyPending || 'Səyahət Başlamayıb'}</span>
-            </div>
-          )}
-
-        </div>
-      </div>
-
-      {/* Journey Tracking Message */}
-      {journeyStats.trackingMessage && (
-        <div className={styles.trackingMessage}>
-          <div className={styles.trackingIcon}>
-            <i className="fas fa-info-circle"></i>
-          </div>
-          <span>{journeyStats.trackingMessage}</span>
-        </div>
-      )}
-
-      {/* Journey Statistics */}
-      <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
-          <div className={styles.statIcon}>
-            <i className={journeyStats.journeyStarted ? "fas fa-calendar-day" : "fas fa-calendar-plus"}></i>
-          </div>
-          <div className={styles.statContent}>
-            <div className={styles.statValue}>
-              {journeyStats.journeyStarted ? journeyStats.daysOnRoad : 0}
-            </div>
-            <div className={styles.statLabel}>
-              {journeyStats.journeyStarted ? t.daysOnRoad : (t.waitingToStart || 'Başlamaq üçün gözləyir')}
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.statCard}>
-          <div className={styles.statIcon}>
-            <i className={journeyStats.journeyCompleted ? "fas fa-flag-checkered" : "fas fa-hourglass-half"}></i>
-          </div>
-          <div className={styles.statContent}>
-            <div className={styles.statValue}>
-              {journeyStats.journeyCompleted ? 0 : journeyStats.daysRemaining}
-            </div>
-            <div className={styles.statLabel}>
-              {journeyStats.journeyCompleted ? (t.journeyFinished || 'Səyahət Bitdi') : t.daysRemaining}
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.statCard}>
-          <div className={styles.statIcon}>
-            <i className="fas fa-map-marker-alt"></i>
-          </div>
-          <div className={styles.statContent}>
-            <div className={styles.statValue}>{completedStops}/{route.stops.length}</div>
-            <div className={styles.statLabel}>{t.completedStops}</div>
-          </div>
-        </div>
-
-        <div className={styles.statCard}>
-          <div className={styles.statIcon}>
+      <div className={styles.routeMapContainer}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>
             <i className="fas fa-route"></i>
-          </div>
-          <div className={styles.statContent}>
-            <div className={styles.statValue}>
-              {journeyStats.totalDurationHours > 24
-                ? `${Math.round(journeyStats.totalDurationHours / 24)}d`
-                : `${Math.round(journeyStats.totalDurationHours)}h`}
-            </div>
-            <div className={styles.statLabel}>{t.totalJourneyTime || 'Ümumi Müddət'}</div>
-          </div>
-        </div>
-      </div>
+            {t.routeProgress}
+          </h2>
+          <div className={styles.routeName}>{route.name}</div>
 
-      {/* Progress Bar */}
-      <div className={styles.progressSection}>
-        <div className={styles.progressHeader}>
-          <span className={styles.progressLabel}>{t.routeProgress}</span>
-          <span className={styles.progressPercentage}>{progress}%</span>
-        </div>
-        <div className={styles.progressBar}>
-          <div
-            className={styles.progressFill}
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-      </div>
-
-      {/* Current Location */}
-      <div className={styles.currentLocationCard}>
-        <div className={styles.currentLocationHeader}>
-          <i className={
-            journeyStats.journeyCompleted ? "fas fa-flag-checkered" :
-              journeyStats.journeyStarted ? "fas fa-location-dot" :
-                "fas fa-clock"
-          }></i>
-          <span>
-            {journeyStats.journeyCompleted ? (t.finalDestination || 'Son Təyinat') :
-              journeyStats.journeyStarted ? t.currentLocation :
-                (t.startingPoint || 'Başlanğıc Nöqtəsi')}
-          </span>
-        </div>
-        <div className={styles.currentLocationContent}>
-          {journeyStats.journeyCompleted ? (
-            <>
-              <h3>{route.route_map?.destination?.stop_name || 'Təyinat'}</h3>
-              <p>{route.route_map?.destination?.full_location}</p>
-              <div className={styles.completedMessage}>
-                <i className="fas fa-check-circle"></i>
-                <span>{t.journeyCompletedMessage || 'Avtomobil təyinat nöqtəsinə çatdı!'}</span>
-              </div>
-            </>
-          ) : journeyStats.journeyCompleted ? (
-            <>
-              <h3>{route.route_map?.destination?.stop_name || 'Təyinat'}</h3>
-              <p>{route.route_map?.destination?.full_location}</p>
-              <div className={styles.completedMessage}>
-                <i className="fas fa-check-circle"></i>
-                <span>{t.journeyCompletedMessage || 'Avtomobil təyinat nöqtəsinə çatdı!'}</span>
-              </div>
-            </>
-          )
-
-            : journeyStats.journeyStarted && currentStop ? (
-              <>
-                <h3>{currentStop.stop_name}</h3>
-                <p>{currentStop.full_location}</p>
-                {currentStop.location_details && (
-                  <p className={styles.locationDetails}>{currentStop.location_details}</p>
-                )}
-              </>
+          {/* Journey Status Badge */}
+          <div className={styles.journeyStatusBadge}>
+            {journeyStats.journeyCompleted ? (
+                <div className={`${styles.statusBadge} ${styles.completed}`}>
+                  <i className="fas fa-check-circle"></i>
+                  <span>{t.journeyCompleted || 'Səyahət Tamamlandı'}</span>
+                </div>
+            ) : journeyStats.journeyStarted ? (
+                <div className={`${styles.statusBadge} ${styles.inProgress}`}>
+                  <i className="fas fa-shipping-fast"></i>
+                  <span>{t.journeyInProgress || 'Səyahət Davam Edir'}</span>
+                </div>
             ) : (
-              <>
-                <h3>{route.route_map?.origin?.stop_name || 'Başlanğıc'}</h3>
-                <p>{route.route_map?.origin?.full_location}</p>
-                <div className={styles.pendingMessage}>
-                  <i className="fas fa-hourglass-start"></i>
-                  <span>{t.journeyNotStartedMessage || 'Avtomobil hələ yola düşməyib'}</span>
+                <div className={`${styles.statusBadge} ${styles.pending}`}>
+                  <i className="fas fa-clock"></i>
+                  <span>{t.journeyPending || 'Səyahət Başlamayıb'}</span>
                 </div>
-              </>
             )}
+
+          </div>
         </div>
-      </div>
 
-      {/* Interactive Route Map */}
-      {route.route_map && (
-        <div className={styles.interactiveMapSection}>
-          <h3 className={styles.mapSectionTitle}>
-            <i className="fas fa-map"></i>
-            {t.interactiveMap || 'İnteraktiv Xəritə'}
-          </h3>
+        <div className={styles.journeyDates}>
+          <div className={styles.dateItem}>
+            <i className="fas fa-calendar-alt"></i>
+            <span>{t.departureDate || 'Yola Düşmə Tarixi'}: <strong>{journeyStats.formattedDepartureDate}</strong></span>
+          </div>
+          <div className={styles.dateItem}>
+            <i className="fas fa-calendar-check"></i>
+            <span>{t.expectedArrivalDate || 'Təxmini Çatış Tarihi'}: <strong>{journeyStats.formattedExpectedArrivalDate}</strong></span>
+          </div>
+        </div>
 
-          <div className={styles.mapGrid}>
-            {/* Origin Map */}
-            {route.route_map.origin && (
-              <div className={styles.mapCard}>
-                <div className={styles.mapPreview}>
-                  <div
-                    className={styles.mapThumbnail}
-                    onClick={() => openMapModal(route.route_map.origin, `${t.departure || 'Yola Düşmə'}: ${route.route_map.origin.stop_name}`)}
-                  >
-                    <div className={styles.mapOverlay}>
-                      <i className="fas fa-search-plus"></i>
-                      <span>{t.viewOnMap || 'Xəritədə Bax'}</span>
-                    </div>
-                    <div className={styles.mapIcon}>
-                      <i className="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div className={styles.mapGradient}></div>
+        {/* Journey Tracking Message */}
+        {journeyStats.trackingMessage && (
+            <div className={styles.trackingMessage}>
+              <div className={styles.trackingIcon}>
+                <i className="fas fa-info-circle"></i>
+              </div>
+              <span>{journeyStats.trackingMessage}</span>
+            </div>
+        )}
+
+        {/* Journey Statistics */}
+        <div className={styles.statsGrid}>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>
+              <i className={journeyStats.journeyStarted ? "fas fa-calendar-day" : "fas fa-calendar-plus"}></i>
+            </div>
+            <div className={styles.statContent}>
+              <div className={styles.statValue}>
+                {journeyStats.journeyStarted ? journeyStats.daysOnRoad : 0}
+              </div>
+              <div className={styles.statLabel}>
+                {journeyStats.journeyStarted ? t.daysOnRoad : (t.waitingToStart || 'Başlamaq üçün gözləyir')}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>
+              <i className={journeyStats.journeyCompleted ? "fas fa-flag-checkered" : "fas fa-hourglass-half"}></i>
+            </div>
+            <div className={styles.statContent}>
+              <div className={styles.statValue}>
+                {journeyStats.journeyCompleted ? 0 : journeyStats.daysRemaining}
+              </div>
+              <div className={styles.statLabel}>
+                {journeyStats.journeyCompleted ? (t.journeyFinished || 'Səyahət Bitdi') : t.daysRemaining}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>
+              <i className="fas fa-map-marker-alt"></i>
+            </div>
+            <div className={styles.statContent}>
+              <div className={styles.statValue}>{completedStops}/{route.stops.length}</div>
+              <div className={styles.statLabel}>{t.completedStops}</div>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>
+              <i className="fas fa-route"></i>
+            </div>
+            <div className={styles.statContent}>
+              <div className={styles.statValue}>
+                {journeyStats.totalDurationHours > 24
+                    ? `${Math.round(journeyStats.totalDurationHours / 24)}d`
+                    : `${Math.round(journeyStats.totalDurationHours)}h`}
+              </div>
+              <div className={styles.statLabel}>{t.totalJourneyTime || 'Ümumi Müddət'}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+        <div className={styles.progressSection}>
+          <div className={styles.progressHeader}>
+            <span className={styles.progressLabel}>{t.routeProgress}</span>
+            <span className={styles.progressPercentage}>{progress}%</span>
+          </div>
+          <div className={styles.progressBar}>
+            <div
+                className={styles.progressFill}
+                style={{width: `${progress}%`}}
+            ></div>
+          </div>
+        </div>
+
+        {/* Current Location */}
+        <div className={styles.currentLocationCard}>
+          <div className={styles.currentLocationHeader}>
+            <i className={
+              journeyStats.journeyCompleted ? "fas fa-flag-checkered" :
+                  journeyStats.journeyStarted ? "fas fa-location-dot" :
+                      "fas fa-clock"
+            }></i>
+            <span>
+            {journeyStats.journeyCompleted ? (t.finalDestination || 'Son Təyinat') :
+                journeyStats.journeyStarted ? t.currentLocation :
+                    (t.startingPoint || 'Başlanğıc Nöqtəsi')}
+          </span>
+          </div>
+          <div className={styles.currentLocationContent}>
+            {journeyStats.journeyCompleted ? (
+                <>
+                  <h3>{route.route_map?.destination?.stop_name || 'Təyinat'}</h3>
+                  <p>{route.route_map?.destination?.full_location}</p>
+                  <div className={styles.completedMessage}>
+                    <i className="fas fa-check-circle"></i>
+                    <span>{t.journeyCompletedMessage || 'Avtomobil təyinat nöqtəsinə çatdı!'}</span>
                   </div>
-                </div>
-                <div className={styles.mapInfo}>
-                  <h4>{route.route_map.origin.stop_name}</h4>
-                  <p>{route.route_map.origin.full_location}</p>
-                  <div className={styles.mapMeta}>
+                </>
+            ) : journeyStats.journeyCompleted ? (
+                    <>
+                      <h3>{route.route_map?.destination?.stop_name || 'Təyinat'}</h3>
+                      <p>{route.route_map?.destination?.full_location}</p>
+                      <div className={styles.completedMessage}>
+                        <i className="fas fa-check-circle"></i>
+                        <span>{t.journeyCompletedMessage || 'Avtomobil təyinat nöqtəsinə çatdı!'}</span>
+                      </div>
+                    </>
+                )
+
+                : journeyStats.journeyStarted && currentStop ? (
+                    <>
+                      <h3>{currentStop.stop_name}</h3>
+                      <p>{currentStop.full_location}</p>
+                      {currentStop.location_details && (
+                          <p className={styles.locationDetails}>{currentStop.location_details}</p>
+                      )}
+                    </>
+                ) : (
+                    <>
+                      <h3>{route.route_map?.origin?.stop_name || 'Başlanğıc'}</h3>
+                      <p>{route.route_map?.origin?.full_location}</p>
+                      <div className={styles.pendingMessage}>
+                        <i className="fas fa-hourglass-start"></i>
+                        <span>{t.journeyNotStartedMessage || 'Avtomobil hələ yola düşməyib'}</span>
+                      </div>
+                    </>
+                )}
+          </div>
+        </div>
+
+        {/* Interactive Route Map */}
+        {route.route_map && (
+            <div className={styles.interactiveMapSection}>
+              <h3 className={styles.mapSectionTitle}>
+                <i className="fas fa-map"></i>
+                {t.interactiveMap || 'İnteraktiv Xəritə'}
+              </h3>
+
+              <div className={styles.mapGrid}>
+                {/* Origin Map */}
+                {route.route_map.origin && (
+                    <div className={styles.mapCard}>
+                      <div className={styles.mapPreview}>
+                        <div
+                            className={styles.mapThumbnail}
+                            onClick={() => openMapModal(route.route_map.origin, `${t.departure || 'Yola Düşmə'}: ${route.route_map.origin.stop_name}`)}
+                        >
+                          <div className={styles.mapOverlay}>
+                            <i className="fas fa-search-plus"></i>
+                            <span>{t.viewOnMap || 'Xəritədə Bax'}</span>
+                          </div>
+                          <div className={styles.mapIcon}>
+                            <i className="fas fa-map-marker-alt"></i>
+                          </div>
+                          <div className={styles.mapGradient}></div>
+                        </div>
+                      </div>
+                      <div className={styles.mapInfo}>
+                        <h4>{route.route_map.origin.stop_name}</h4>
+                        <p>{route.route_map.origin.full_location}</p>
+                        <div className={styles.mapMeta}>
                     <span className={styles.mapType}>
                       <i className="fas fa-play"></i>
                       {t.origin || 'Başlanğıc'}
                     </span>
-                    <span className={styles.mapTime}>
+                          <span className={styles.mapTime}>
                       <i className="fas fa-clock"></i>
-                      {route.route_map.origin.departure_time}
+                            {route.route_map.origin.departure_time}
                     </span>
-                  </div>
-                </div>
-              </div>
-            )}
+                        </div>
+                      </div>
+                    </div>
+                )}
 
-            {/* Destination Map */}
-            {route.route_map.destination && (
-              <div className={styles.mapCard}>
-                <div className={styles.mapPreview}>
-                  <div
-                    className={styles.mapThumbnail}
-                    onClick={() => openMapModal(route.route_map.destination, `${t.destination || 'Təyinat'}: ${route.route_map.destination.stop_name}`)}
-                  >
-                    <div className={styles.mapOverlay}>
-                      <i className="fas fa-search-plus"></i>
-                      <span>{t.viewOnMap || 'Xəritədə Bax'}</span>
-                    </div>
-                    <div className={styles.mapIcon}>
-                      <i className="fas fa-flag-checkered"></i>
-                    </div>
-                    <div className={styles.mapGradient}></div>
-                  </div>
-                </div>
-                <div className={styles.mapInfo}>
-                  <h4>{route.route_map.destination.stop_name}</h4>
-                  <p>{route.route_map.destination.full_location}</p>
-                  <div className={styles.mapMeta}>
+                {/* Destination Map */}
+                {route.route_map.destination && (
+                    <div className={styles.mapCard}>
+                      <div className={styles.mapPreview}>
+                        <div
+                            className={styles.mapThumbnail}
+                            onClick={() => openMapModal(route.route_map.destination, `${t.destination || 'Təyinat'}: ${route.route_map.destination.stop_name}`)}
+                        >
+                          <div className={styles.mapOverlay}>
+                            <i className="fas fa-search-plus"></i>
+                            <span>{t.viewOnMap || 'Xəritədə Bax'}</span>
+                          </div>
+                          <div className={styles.mapIcon}>
+                            <i className="fas fa-flag-checkered"></i>
+                          </div>
+                          <div className={styles.mapGradient}></div>
+                        </div>
+                      </div>
+                      <div className={styles.mapInfo}>
+                        <h4>{route.route_map.destination.stop_name}</h4>
+                        <p>{route.route_map.destination.full_location}</p>
+                        <div className={styles.mapMeta}>
                     <span className={styles.mapType}>
                       <i className="fas fa-flag"></i>
                       {t.destination || 'Təyinat'}
                     </span>
-                    <span className={styles.mapTime}>
+                          <span className={styles.mapTime}>
                       <i className="fas fa-clock"></i>
-                      {route.route_map.destination.arrival_time}
+                            {route.route_map.destination.arrival_time}
                     </span>
-                  </div>
-                </div>
-              </div>
-            )}
+                        </div>
+                      </div>
+                    </div>
+                )}
 
-            {/* Current Stop Map */}
-            {route.route_map.current_stop && (
-              <div className={styles.mapCard}>
-                <div className={styles.mapPreview}>
-                  <div
-                    className={styles.mapThumbnail}
-                    onClick={() => openMapModal(route.route_map.current_stop, `${t.current || 'Hazırda'}: ${route.route_map.current_stop.stop_name}`)}
-                  >
-                    <div className={styles.mapOverlay}>
-                      <i className="fas fa-search-plus"></i>
-                      <span>{t.viewOnMap || 'Xəritədə Bax'}</span>
-                    </div>
-                    <div className={styles.mapIcon}>
-                      <i className="fas fa-location-dot"></i>
-                    </div>
-                    <div className={styles.mapGradient}></div>
-                  </div>
-                </div>
-                <div className={styles.mapInfo}>
-                  <h4>{route.route_map.current_stop.stop_name}</h4>
-                  <p>{route.route_map.current_stop.full_location}</p>
-                  <div className={styles.mapMeta}>
+                {/* Current Stop Map */}
+                {route.route_map.current_stop && (
+                    <div className={styles.mapCard}>
+                      <div className={styles.mapPreview}>
+                        <div
+                            className={styles.mapThumbnail}
+                            onClick={() => openMapModal(route.route_map.current_stop, `${t.current || 'Hazırda'}: ${route.route_map.current_stop.stop_name}`)}
+                        >
+                          <div className={styles.mapOverlay}>
+                            <i className="fas fa-search-plus"></i>
+                            <span>{t.viewOnMap || 'Xəritədə Bax'}</span>
+                          </div>
+                          <div className={styles.mapIcon}>
+                            <i className="fas fa-location-dot"></i>
+                          </div>
+                          <div className={styles.mapGradient}></div>
+                        </div>
+                      </div>
+                      <div className={styles.mapInfo}>
+                        <h4>{route.route_map.current_stop.stop_name}</h4>
+                        <p>{route.route_map.current_stop.full_location}</p>
+                        <div className={styles.mapMeta}>
                     <span className={styles.mapTypeCurrent}>
                       <i className="fas fa-location-dot"></i>
                       {t.current || 'Hazırda'}
                     </span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Route Timeline */}
-      <div className={styles.timeline}>
-        <h3 className={styles.timelineTitle}>
-          <i className="fas fa-timeline"></i>
-          {t.route}
-        </h3>
-
-        <div className={styles.timelineContainer}>
-          {route.stops.map((stop, index) => {
-            let isCompleted, isCurrent, isUpcoming
-            const tracking = car.journey_tracking || {}
-
-            // Check journey completion first
-            if (tracking.journey_completed || tracking.journey_status === 'completed') {
-              // If journey is completed, all stops are completed
-              isCompleted = true
-              isCurrent = false
-              isUpcoming = false
-            } else if (stop.status) {
-  const status = typeof stop.status === 'string' ? stop.status : stop.status.status
-  isCompleted = status === 'completed'
-  isCurrent = status === 'current' || stop.is_current
-  isUpcoming = status === 'upcoming'
-            } else {
-              // Fallback to old logic
-              if (!tracking.journey_started) {
-                isCompleted = false
-                isCurrent = index === 0
-                isUpcoming = index > 0
-              } else {
-                isCompleted = completedStops > index
-                isCurrent = stop.is_current
-                isUpcoming = !isCompleted && !isCurrent
-              }
-            }
-
-            return (
-              <div
-                key={stop.id}
-                className={`${styles.timelineItem} ${isCompleted ? styles.completed :
-                  isCurrent ? styles.current :
-                    styles.upcoming
-                  }`}
-              >
-                <div className={styles.timelineMarker}>
-                  <div className={styles.timelineIcon}>
-                    {isCompleted && <i className="fas fa-check"></i>}
-                    {isCurrent && <i className="fas fa-location-dot"></i>}
-                    {isUpcoming && <i className="fas fa-circle"></i>}
-                  </div>
-                  {index < route.stops.length - 1 && (
-                    <div className={styles.timelineLine}></div>
-                  )}
-                </div>
-
-                <div className={styles.timelineContent}>
-                  <div className={styles.timelineHeader}>
-                    <h4 className={styles.stopName}>{stop.stop_name}</h4>
-                    <div className={styles.timelineStatus}>
-                      {isCompleted && (
-                        <span className={styles.statusCompleted}>
-                          {(car.journey_tracking?.journey_completed || car.journey_completed) && index === route.stops.length - 1
-                            ? (t.arrived || 'Çatdı')
-                            : t.completed}
-                        </span>
-                      )}
-                      {isCurrent && (
-                        <span className={styles.statusCurrent}>
-                          {(!car.journey_tracking?.journey_started && !car.journey_started) ||
-                            car.journey_tracking?.journey_status === 'not_started'
-                            ? (t.waiting || 'Gözləyir')
-                            : t.current}
-                        </span>
-                      )}
-                      {isUpcoming && <span className={styles.statusUpcoming}>{t.upcoming}</span>}
-                    </div>
-                  </div>
-
-                  <div className={styles.stopDetails}>
-                    <div className={styles.stopLocation}>
-                      <i className="fas fa-map-marker-alt"></i>
-                      <span>{stop.city}, {stop.country}</span>
-                    </div>
-
-                    {stop.location_details && (
-                      <div className={styles.stopDescription}>
-                        <i className="fas fa-info-circle"></i>
-                        <span>{stop.location_details}</span>
+                        </div>
                       </div>
-                    )}
-
-                    <div className={styles.stopTiming}>
-                      <div className={styles.timingItem}>
-                        <i className="fas fa-clock"></i>
-                        <span>{t.departure}: {stop.departure_time}</span>
-                      </div>
-
-                      {stop.duration_minutes > 0 && (
-                        <div className={styles.timingItem}>
-                          <i className="fas fa-hourglass-half"></i>
-                          <span>{t.duration}: {stop.duration_minutes} {t.minutes}</span>
-                        </div>
-                      )}
-
-                      {stop.estimated_departure !== stop.departure_time && (
-                        <div className={styles.timingItem}>
-                          <i className="fas fa-plane-departure"></i>
-                          <span>{t.estimatedArrival}: {stop.estimated_departure}</span>
-                        </div>
-                      )}
-
-                      {(stop.travel_time_human || stop.travel_time_hours > 0) && (
-                        <div className={styles.timingItem}>
-                          <i className="fas fa-road"></i>
-                          <span>{t.travelTime || 'Yol Müddəti'}: {stop.travel_time_human || `${stop.travel_time_hours}h`}</span>
-                        </div>
-                      )}
-
-                      {stop.duration_human && (
-                        <div className={styles.timingItem}>
-                          <i className="fas fa-pause"></i>
-                          <span>{t.stopDuration || 'Dayanma'}: {stop.duration_human}</span>
-                        </div>
-                      )}
-
-                      {stop.google_maps_iframe && (
-                        <div className={styles.timingItem}>
-                          <button
-                            className={styles.mapButton}
-                            onClick={() => openMapModal(stop, stop.stop_name)}
-                          >
-                            <i className="fas fa-map"></i>
-                            <span>{t.viewOnMap || 'Xəritədə Bax'}</span>
-                          </button>
-                        </div>
-                      )}
                     </div>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Map Modal */}
-      {showMapModal && selectedMapData && (
-        <div className={styles.mapModal} onClick={closeMapModal}>
-          <div className={styles.mapModalContent} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.mapModalHeader}>
-              <h3>{selectedMapData.title}</h3>
-              <button className={styles.closeMapModal} onClick={closeMapModal}>
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-
-            <div className={styles.mapModalBody}>
-              {selectedMapData.google_maps_iframe ? (
-                <div
-                  className={styles.mapIframeContainer}
-                  dangerouslySetInnerHTML={{
-                    __html: selectedMapData.google_maps_iframe.replace(/width="\d+"/, 'width="100%"').replace(/height="\d+"/, 'height="400"')
-                  }}
-                />
-              ) : (
-                <div className={styles.mapPlaceholder}>
-                  <i className="fas fa-map"></i>
-                  <p>{t.mapNotAvailable || 'Xəritə mövcud deyil'}</p>
-                </div>
-              )}
-
-              <div className={styles.mapModalInfo}>
-                <div className={styles.mapModalLocation}>
-                  <h4>{selectedMapData.stop_name}</h4>
-                  <p>{selectedMapData.full_location}</p>
-                  {selectedMapData.location_details && (
-                    <p className={styles.mapModalDetails}>{selectedMapData.location_details}</p>
-                  )}
-                </div>
-
-                {selectedMapData.coordinates && (
-                  <div className={styles.mapModalCoordinates}>
-                    <div className={styles.coordinateItem}>
-                      <span className={styles.coordinateLabel}>{t.latitude || 'Enlik'}:</span>
-                      <span className={styles.coordinateValue}>{selectedMapData.coordinates.latitude}</span>
-                    </div>
-                    <div className={styles.coordinateItem}>
-                      <span className={styles.coordinateLabel}>{t.longitude || 'Uzunluq'}:</span>
-                      <span className={styles.coordinateValue}>{selectedMapData.coordinates.longitude}</span>
-                    </div>
-                  </div>
                 )}
               </div>
             </div>
+        )}
+
+        {/* Route Timeline */}
+        <div className={styles.timeline}>
+          <h3 className={styles.timelineTitle}>
+            <i className="fas fa-timeline"></i>
+            {t.route}
+          </h3>
+
+          <div className={styles.timelineContainer}>
+            {route.stops.map((stop, index) => {
+              let isCompleted, isCurrent, isUpcoming
+              const tracking = car.journey_tracking || {}
+
+              // Check journey completion first
+              if (tracking.journey_completed || tracking.journey_status === 'completed') {
+                // If journey is completed, all stops are completed
+                isCompleted = true
+                isCurrent = false
+                isUpcoming = false
+              } else if (stop.status) {
+                const status = typeof stop.status === 'string' ? stop.status : stop.status.status
+                isCompleted = status === 'completed'
+                isCurrent = status === 'current' || stop.is_current
+                isUpcoming = status === 'upcoming'
+              } else {
+                // Fallback to old logic
+                if (!tracking.journey_started) {
+                  isCompleted = false
+                  isCurrent = index === 0
+                  isUpcoming = index > 0
+                } else {
+                  isCompleted = completedStops > index
+                  isCurrent = stop.is_current
+                  isUpcoming = !isCompleted && !isCurrent
+                }
+              }
+
+              return (
+                  <div
+                      key={stop.id}
+                      className={`${styles.timelineItem} ${isCompleted ? styles.completed :
+                          isCurrent ? styles.current :
+                              styles.upcoming
+                      }`}
+                  >
+                    <div className={styles.timelineMarker}>
+                      <div className={styles.timelineIcon}>
+                        {isCompleted && <i className="fas fa-check"></i>}
+                        {isCurrent && <i className="fas fa-location-dot"></i>}
+                        {isUpcoming && <i className="fas fa-circle"></i>}
+                      </div>
+                      {index < route.stops.length - 1 && (
+                          <div className={styles.timelineLine}></div>
+                      )}
+                    </div>
+
+                    <div className={styles.timelineContent}>
+                      <div className={styles.timelineHeader}>
+                        <h4 className={styles.stopName}>{stop.stop_name}</h4>
+                        <div className={styles.timelineStatus}>
+                          {isCompleted && (
+                              <span className={styles.statusCompleted}>
+                          {(car.journey_tracking?.journey_completed || car.journey_completed) && index === route.stops.length - 1
+                              ? (t.arrived || 'Çatdı')
+                              : t.completed}
+                        </span>
+                          )}
+                          {isCurrent && (
+                              <span className={styles.statusCurrent}>
+                          {(!car.journey_tracking?.journey_started && !car.journey_started) ||
+                          car.journey_tracking?.journey_status === 'not_started'
+                              ? (t.waiting || 'Gözləyir')
+                              : t.current}
+                        </span>
+                          )}
+                          {isUpcoming && <span className={styles.statusUpcoming}>{t.upcoming}</span>}
+                        </div>
+                      </div>
+
+                      <div className={styles.stopDetails}>
+                        <div className={styles.stopLocation}>
+                          <i className="fas fa-map-marker-alt"></i>
+                          <span>{stop.city}, {stop.country}</span>
+                        </div>
+
+                        {stop.location_details && (
+                            <div className={styles.stopDescription}>
+                              <i className="fas fa-info-circle"></i>
+                              <span>{stop.location_details}</span>
+                            </div>
+                        )}
+
+                        <div className={styles.stopTiming}>
+                          <div className={styles.timingItem}>
+                            <i className="fas fa-clock"></i>
+                            <span>{t.departure}: {stop.departure_time}</span>
+                          </div>
+
+                          {stop.duration_minutes > 0 && (
+                              <div className={styles.timingItem}>
+                                <i className="fas fa-hourglass-half"></i>
+                                <span>{t.duration}: {stop.duration_minutes} {t.minutes}</span>
+                              </div>
+                          )}
+
+                          {stop.estimated_departure !== stop.departure_time && (
+                              <div className={styles.timingItem}>
+                                <i className="fas fa-plane-departure"></i>
+                                <span>{t.estimatedArrival}: {stop.estimated_departure}</span>
+                              </div>
+                          )}
+
+                          {(stop.travel_time_human || stop.travel_time_hours > 0) && (
+                              <div className={styles.timingItem}>
+                                <i className="fas fa-road"></i>
+                                <span>{t.travelTime || 'Yol Müddəti'}: {stop.travel_time_human || `${stop.travel_time_hours}h`}</span>
+                              </div>
+                          )}
+
+                          {stop.duration_human && (
+                              <div className={styles.timingItem}>
+                                <i className="fas fa-pause"></i>
+                                <span>{t.stopDuration || 'Dayanma'}: {stop.duration_human}</span>
+                              </div>
+                          )}
+
+                          {stop.google_maps_iframe && (
+                              <div className={styles.timingItem}>
+                                <button
+                                    className={styles.mapButton}
+                                    onClick={() => openMapModal(stop, stop.stop_name)}
+                                >
+                                  <i className="fas fa-map"></i>
+                                  <span>{t.viewOnMap || 'Xəritədə Bax'}</span>
+                                </button>
+                              </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              )
+            })}
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Map Modal */}
+        {showMapModal && selectedMapData && (
+            <div className={styles.mapModal} onClick={closeMapModal}>
+              <div className={styles.mapModalContent} onClick={(e) => e.stopPropagation()}>
+                <div className={styles.mapModalHeader}>
+                  <h3>{selectedMapData.title}</h3>
+                  <button className={styles.closeMapModal} onClick={closeMapModal}>
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
+
+                <div className={styles.mapModalBody}>
+                  {selectedMapData.google_maps_iframe ? (
+                      <div
+                          className={styles.mapIframeContainer}
+                          dangerouslySetInnerHTML={{
+                            __html: selectedMapData.google_maps_iframe.replace(/width="\d+"/, 'width="100%"').replace(/height="\d+"/, 'height="400"')
+                          }}
+                      />
+                  ) : (
+                      <div className={styles.mapPlaceholder}>
+                        <i className="fas fa-map"></i>
+                        <p>{t.mapNotAvailable || 'Xəritə mövcud deyil'}</p>
+                      </div>
+                  )}
+
+                  <div className={styles.mapModalInfo}>
+                    <div className={styles.mapModalLocation}>
+                      <h4>{selectedMapData.stop_name}</h4>
+                      <p>{selectedMapData.full_location}</p>
+                      {selectedMapData.location_details && (
+                          <p className={styles.mapModalDetails}>{selectedMapData.location_details}</p>
+                      )}
+                    </div>
+
+                    {selectedMapData.coordinates && (
+                        <div className={styles.mapModalCoordinates}>
+                          <div className={styles.coordinateItem}>
+                            <span className={styles.coordinateLabel}>{t.latitude || 'Enlik'}:</span>
+                            <span className={styles.coordinateValue}>{selectedMapData.coordinates.latitude}</span>
+                          </div>
+                          <div className={styles.coordinateItem}>
+                            <span className={styles.coordinateLabel}>{t.longitude || 'Uzunluq'}:</span>
+                            <span className={styles.coordinateValue}>{selectedMapData.coordinates.longitude}</span>
+                          </div>
+                        </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+        )}
+      </div>
   )
 }

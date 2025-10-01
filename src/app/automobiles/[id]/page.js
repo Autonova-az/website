@@ -57,7 +57,7 @@ export default async function AutomobileDetailPage({params, searchParams}) {
     const locale = await getServerLocale(searchParams)
     const automobileData = await fetchAutomobile(resolvedParams.id, locale)
 
-    console.log(automobileData)
+
 
     return (
         <AutomobileDetailClient

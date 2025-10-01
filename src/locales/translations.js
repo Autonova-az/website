@@ -378,7 +378,9 @@ export const translations = {
         arrived: 'Çatdı',
         waiting: 'Gözləyir',
         travelTime: 'Yol Müddəti',
-        stopDuration: 'Dayanma Müddəti'
+        stopDuration: 'Dayanma Müddəti',
+        departureDate: 'Yola Düşmə Tarixi', // NEW
+        expectedArrivalDate: 'Təxmini Çatış Tarixi', // NEW
       }
     },
     // Footer
@@ -786,7 +788,9 @@ export const translations = {
         arrived: 'Прибыл',
         waiting: 'Ожидает',
         travelTime: 'Время в Пути',
-        stopDuration: 'Время Остановки'
+        stopDuration: 'Время Остановки',
+        departureDate: 'Дата отправления', // NEW
+        expectedArrivalDate: 'Ожидаемая дата прибытия', // NEW
       }
     },
     // Footer
@@ -1194,7 +1198,9 @@ export const translations = {
         arrived: 'Arrived',
         waiting: 'Waiting',
         travelTime: 'Travel Time',
-        stopDuration: 'Stop Duration'
+        stopDuration: 'Stop Duration',
+        departureDate: 'Departure Date', // NEW
+        expectedArrivalDate: 'Estimated Arrival Date', // NEW
       }
     },
     // Footer
