@@ -236,7 +236,6 @@ body {
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .search-btn:hover {
@@ -244,7 +243,6 @@ body {
     border-color: rgba(59, 130, 246, 0.3);
     color: #1e40af;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
 .search-text {
@@ -320,7 +318,7 @@ body {
     .nav-actions .search-btn {
         padding: 0.5rem;
     }
-    
+
     .nav-actions .search-text {
         display: none;
     }
