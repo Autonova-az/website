@@ -6,13 +6,12 @@ import Footer from '@/components/Footer'
 import RouteMap from '@/components/RouteMap'
 import { translations } from '@/locales/translations'
 import styles from './automobile-detail.module.css'
-import BASE_URL from '@/utils/baseurl'
 
 export default function AutomobileDetailClient({ id, locale = 'az', initialData = null }) {
   const router = useRouter()
-  const [car, setCar] = useState(null)
+  const [car, setCar] = useState(initialData)
   const [selectedImage, setSelectedImage] = useState(0)
-  const [selectedColor, setSelectedColor] = useState('')
+  const [selectedColor, setSelectedColor] = useState(initialData?.colors[0])
   const [loading, setLoading] = useState(!initialData)
   const [error, setError] = useState(null)
   const [isZoomed, setIsZoomed] = useState(false)
@@ -23,105 +22,9 @@ export default function AutomobileDetailClient({ id, locale = 'az', initialData 
   // Get translations for current locale
   const t = translations[locale] || translations.az
 
-  // Transform API data to component structure
-  const transformApiData = (apiData) => {
-    return {
-      id: apiData.id,
-      name: apiData.name,
-      brand: apiData.brand?.name || 'Unknown',
-      number: apiData.number,
-      location: apiData.location,
-      current_location: apiData.current_location,
-      departure_date: apiData.departure_date,
-      expected_arrival_time: apiData.expected_arrival_time,
-      route: apiData.route,
-      journey_tracking: apiData.journey_tracking,
-      journey_started: apiData.journey_started,
-      journey_completed: apiData.journey_completed,
-      journey_status: apiData.journey_status,
-      year: new Date().getFullYear(), // Default to current year if not provided
-      images: apiData.images?.map(img => img.url) || [],
-      type: 'SUV', // Default type, could be derived from other data
-      fuel: apiData.technical_specification?.fuel?.type || 'Unknown',
-      transmission: 'Automatic', // Default, could be from API
-      features: apiData.features?.map(f => f.name) || [],
-      description: apiData.brand?.description || t.automobileDetail?.notFoundMessage || 'Avtomobilin təsviri mövcud deyil.',
-      specifications: {
-        engine: apiData.technical_specification?.engine_type,
-        power: apiData.technical_specification?.power,
-        torque: apiData.technical_specification?.torque,
-        acceleration: apiData.technical_specification?.acceleration,
-        topSpeed: apiData.technical_specification?.max_speed,
-        range: apiData.technical_specification?.range,
-        battery: apiData.technical_specification?.battery_capacity,
-        charging: apiData.technical_specification?.charging_time,
-        drivetrain: apiData.technical_specification?.drivetrain,
-        seating: apiData.technical_specification?.seats,
-        warranty: apiData.technical_specification?.warranty,
-        fuelConsumption: apiData.technical_specification?.fuel?.consumption,
-        dimensions: apiData.technical_specification?.dimensions
-      },
-      inStock: true, // Default to true, could be derived from API
-      stockCount: 1, // Default value
-      colors: apiData.color ? [apiData.color.name] : [t.automobileDetail?.colorSelection || 'Qara'],
-      dealer: {
-        name: t.automobileDetail?.dealer?.name || 'Autonova Bakı',
-        phone: '+994 12 555 0123',
-        address: t.automobileDetail?.dealer?.address || 'Bakı şəhəri, Nəsimi rayonu',
-        email: 'info@autonova.az'
-      }
-    }
-  }
-
-  // Initialize with SSR data or fetch from API
-  useEffect(() => {
-    if (initialData) {
-      // Use SSR data
-      const transformedCar = transformApiData(initialData)
-      setCar(transformedCar)
-      if (transformedCar.colors.length > 0) {
-        setSelectedColor(transformedCar.colors[0])
-      }
-      setLoading(false)
-    } else {
-      // Fetch from API (fallback)
-      const fetchAutomobile = async () => {
-        try {
-          setLoading(true)
-          setError(null)
-
-          const response = await fetch(`${BASE_URL}/automobiles/${id}`)
-
-          console.log(response)
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-          }
-
-          const result = await response.json()
-
-          if (result.success && result.data) {
-            const transformedCar = transformApiData(result.data)
-            setCar(transformedCar)
-            if (transformedCar.colors.length > 0) {
-              setSelectedColor(transformedCar.colors[0])
-            }
-          } else {
-            throw new Error('Invalid API response')
-          }
-        } catch (err) {
-          console.error('Error fetching automobile:', err)
-          setError(err.message)
-        } finally {
-          setLoading(false)
-        }
-      }
-
-      if (id) {
-        fetchAutomobile()
-      }
-    }
-  }, [id, initialData, t])
+useEffect(() => {
+  console.log('AutomobileDetailClient', initialData)
+},[])
 
   const handleContactDealer = () => {
     if (car?.dealer?.phone) {
@@ -228,20 +131,20 @@ export default function AutomobileDetailClient({ id, locale = 'az', initialData 
     )
   }
 
-  if (error) {
-    return (
-      <>
-        <div className={styles.notFound}>
-          <h1>{t.automobileDetail?.error || 'Xəta baş verdi'}</h1>
-          <p>{t.automobileDetail?.errorMessage || 'Avtomobil məlumatları yüklənərkən xəta baş verdi'}: {error}</p>
-          <button onClick={() => router.push('/automobiles')} className={styles.backButton}>
-            {t.automobileDetail?.backToAutomobiles || 'Avtomobillərə qayıt'}
-          </button>
-        </div>
-        <Footer />
-      </>
-    )
-  }
+  // if (error) {
+  //   return (
+  //     <>
+  //       <div className={styles.notFound}>
+  //         <h1>{t.automobileDetail?.error || 'Xəta baş verdi'}</h1>
+  //         <p>{t.automobileDetail?.errorMessage || 'Avtomobil məlumatları yüklənərkən xəta baş verdi'}: {error}</p>
+  //         <button onClick={() => router.push('/automobiles')} className={styles.backButton}>
+  //           {t.automobileDetail?.backToAutomobiles || 'Avtomobillərə qayıt'}
+  //         </button>
+  //       </div>
+  //       <Footer />
+  //     </>
+  //   )
+  // }
 
   if (!car) {
     return (
@@ -670,3 +573,105 @@ export default function AutomobileDetailClient({ id, locale = 'az', initialData 
     </>
   )
 }
+
+
+
+// Transform API data to component structure
+// const transformApiData = (apiData) => {
+//   return {
+//     id: apiData.id,
+//     name: apiData.name,
+//     brand: apiData.brand?.name || 'Unknown',
+//     number: apiData.number,
+//     location: apiData.location,
+//     current_location: apiData.current_location,
+//     departure_date: apiData.departure_date,
+//     expected_arrival_time: apiData.expected_arrival_time,
+//     route: apiData.route,
+//     journey_tracking: apiData.journey_tracking,
+//     journey_started: apiData.journey_started,
+//     journey_completed: apiData.journey_completed,
+//     journey_status: apiData.journey_status,
+//     year: new Date().getFullYear(), // Default to current year if not provided
+//     images: apiData.images?.map(img => img.url) || [],
+//     type: 'SUV', // Default type, could be derived from other data
+//     fuel: apiData.technical_specification?.fuel?.type || 'Unknown',
+//     transmission: 'Automatic', // Default, could be from API
+//     features: apiData.features?.map(f => f.name) || [],
+//     description: apiData.brand?.description || t.automobileDetail?.notFoundMessage || 'Avtomobilin təsviri mövcud deyil.',
+//     specifications: {
+//       engine: apiData.technical_specification?.engine_type,
+//       power: apiData.technical_specification?.power,
+//       torque: apiData.technical_specification?.torque,
+//       acceleration: apiData.technical_specification?.acceleration,
+//       topSpeed: apiData.technical_specification?.max_speed,
+//       range: apiData.technical_specification?.range,
+//       battery: apiData.technical_specification?.battery_capacity,
+//       charging: apiData.technical_specification?.charging_time,
+//       drivetrain: apiData.technical_specification?.drivetrain,
+//       seating: apiData.technical_specification?.seats,
+//       warranty: apiData.technical_specification?.warranty,
+//       fuelConsumption: apiData.technical_specification?.fuel?.consumption,
+//       dimensions: apiData.technical_specification?.dimensions
+//     },
+//     inStock: true, // Default to true, could be derived from API
+//     stockCount: 1, // Default value
+//     colors: apiData.color ? [apiData.color.name] : [t.automobileDetail?.colorSelection || 'Qara'],
+//     dealer: {
+//       name: t.automobileDetail?.dealer?.name || 'Autonova Bakı',
+//       phone: '+994 12 555 0123',
+//       address: t.automobileDetail?.dealer?.address || 'Bakı şəhəri, Nəsimi rayonu',
+//       email: 'info@autonova.az'
+//     }
+//   }
+// }
+
+// Initialize with SSR data or fetch from API
+// useEffect(() => {
+//   if (initialData) {
+//     // Use SSR data
+//     const transformedCar = transformApiData(initialData)
+//     setCar(transformedCar)
+//     if (transformedCar.colors.length > 0) {
+//       setSelectedColor(transformedCar.colors[0])
+//     }
+//     setLoading(false)
+//   } else {
+//     // Fetch from API (fallback)
+//     const fetchAutomobile = async () => {
+//       try {
+//         setLoading(true)
+//         setError(null)
+//
+//         const response = await fetch(`${BASE_URL}/automobiles/${id}`)
+//
+//         console.log(response)
+//
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! status: ${response.status}`)
+//         }
+//
+//         const result = await response.json()
+//
+//         if (result.success && result.data) {
+//           const transformedCar = transformApiData(result.data)
+//           setCar(transformedCar)
+//           if (transformedCar.colors.length > 0) {
+//             setSelectedColor(transformedCar.colors[0])
+//           }
+//         } else {
+//           throw new Error('Invalid API response')
+//         }
+//       } catch (err) {
+//         console.error('Error fetching automobile:', err)
+//         setError(err.message)
+//       } finally {
+//         setLoading(false)
+//       }
+//     }
+//
+//     if (id) {
+//       fetchAutomobile()
+//     }
+//   }
+// }, [id, initialData, t])

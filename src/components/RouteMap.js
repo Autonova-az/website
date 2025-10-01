@@ -24,10 +24,8 @@ export default function RouteMap({ route, car, locale = 'az' }) {
   const t = translations[locale]?.automobileDetail?.route || translations.az.automobileDetail.route
 
   // Calculate journey statistics with new API data
-const calculateJourneyStats = (route) => {
+const calculateJourneyStats = () => {
   const startTime = new Date(car.departure_date)
-  const endTime = new Date(car.expected_arrival_time)
-  const now = new Date()
 
   let daysOnRoad = 0
   let daysRemaining = 0
@@ -41,7 +39,7 @@ const calculateJourneyStats = (route) => {
   // Əgər səfər bitibsə
   else if (car.journey_tracking.journey_completed) {
     daysOnRoad = Math.ceil(
-      (new Date(route.expected_arrival_time) - startTime) / (1000 * 60 * 60 * 24)
+      (new Date(car.expected_arrival_time) - startTime) / (1000 * 60 * 60 * 24)
     )
     daysRemaining = 0
   }
@@ -53,6 +51,8 @@ const calculateJourneyStats = (route) => {
 
   const progress = Math.max(0, Math.min(100, car.journey_tracking.progress_percentage))
 
+  const totalDurationHours = route.total_hours;
+
   return {
     daysOnRoad,
     daysRemaining,
@@ -62,6 +62,7 @@ const calculateJourneyStats = (route) => {
     status: car.journey_tracking.status,
     message: car.journey_tracking.message,
     currentLocation: car.journey_tracking.current_location,
+    totalDurationHours
   }
 }
 
