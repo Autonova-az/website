@@ -61,7 +61,7 @@ export const fetchAutomobile = async (id, locale, path) => {
             next: {revalidate: 0}
         })
 
-        console.log(`${BASE_URL}/automobiles/vin/${id}?locale=${locale}`)
+        console.log(`${BASE_URL}/${path}/${id}?locale=${locale}`)
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)

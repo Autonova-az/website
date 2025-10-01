@@ -2,14 +2,11 @@
 import { NextResponse } from 'next/server'
 
 export function middleware(request) {
-  // Start with a default response object.
-  // This response object will be modified by both parts of the middleware.
   const response = NextResponse.next();
-
-  // --- Part 1: Handle Locale (from your first middleware) ---
   const url = new URL(request.url);
-  const locale = url.searchParams.get('locale');
 
+  // --- Part 1: Handle Locale ---
+  const locale = url.searchParams.get('locale');
   if (locale && ['az', 'ru', 'en'].includes(locale)) {
     response.cookies.set('locale', locale, {
       maxAge: 60 * 60 * 24 * 365, // 1 year
@@ -17,27 +14,40 @@ export function middleware(request) {
     });
   }
 
-  // --- Part 2: Set Custom Headers (from your second middleware) ---
-  // We need to create a new Headers object from the *current* response headers
-  // so that any headers set by middleware before this (if any) are preserved.
-  // Then we add our custom headers.
-
-  // Note: The headers object passed to NextResponse.next({ headers })
-  //       is merged with existing headers, but it's good practice to
-  //       ensure you're modifying a set that includes previous changes.
-  //       However, for headers directly from middleware, you often just
-  //       set them on the final response headers.
-  //       The simpler way for custom headers often involves directly modifying
-  //       the response.headers object, or passing them in the options if it's new.
-
-  // Let's modify the response.headers directly:
+  // --- Part 2: SEO and Security Headers ---
   response.headers.set("x-current-path", request.nextUrl.pathname);
   response.headers.set("x-search-params", request.nextUrl.searchParams.toString());
+  
+  // Security headers
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
 
-  // --- Optional: Debugging logs (remove in production) ---
+  // --- Part 3: Handle SEO Redirects ---
+  const pathname = request.nextUrl.pathname;
 
-  console.log( "isliyen middlware asagidaki");
+  // Redirect old URLs to new ones
+  if (pathname === '/home') {
+    return NextResponse.redirect(new URL('/', request.url), 301);
+  }
+  
+  if (pathname === '/cars') {
+    return NextResponse.redirect(new URL('/automobiles', request.url), 301);
+  }
 
+  // Handle trailing slashes
+  if (pathname.endsWith('/') && pathname !== '/') {
+    return NextResponse.redirect(new URL(pathname.slice(0, -1), request.url), 301);
+  }
+
+  // --- Part 4: Bot Detection and Handling ---
+  const userAgent = request.headers.get('user-agent') || '';
+  const isBot = /bot|crawler|spider|crawling/i.test(userAgent);
+  
+  if (isBot) {
+    response.headers.set('X-Robots-Tag', 'index, follow');
+  }
 
   return response;
 }

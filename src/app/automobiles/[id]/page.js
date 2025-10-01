@@ -4,6 +4,7 @@ import AutomobileDetailClient from './AutomobileDetailClient'
 import BASE_URL from '@/utils/baseurl'
 import {fetchAutomobile, transformApiData} from "@/utils/automobilutils";
 import Navbar from "@/components/Navbar";
+import { notFound } from 'next/navigation';
 
 
 export const dynamic = "force-dynamic";
@@ -34,6 +35,11 @@ export default async function AutomobileDetailPage({params, searchParams}) {
     const resolvedParams = await params
     const locale = await getServerLocale(searchParams)
     const automobileData = await fetchAutomobile(resolvedParams.id, locale, "view-automobiles")
+
+    // If no automobile data found, trigger 404
+    if (!automobileData) {
+        notFound()
+    }
 
     return (
         <>

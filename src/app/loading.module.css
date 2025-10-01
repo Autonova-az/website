@@ -1,0 +1,69 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.spinner {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.car {
+  font-size: 3rem;
+  animation: drive 2s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+.road {
+  width: 200px;
+  height: 4px;
+  background: repeating-linear-gradient(
+    to right,
+    white 0px,
+    white 20px,
+    transparent 20px,
+    transparent 40px
+  );
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: roadMove 1s linear infinite;
+}
+
+@keyframes drive {
+  0%, 100% {
+    transform: translateX(-50px);
+  }
+  50% {
+    transform: translateX(50px);
+  }
+}
+
+@keyframes roadMove {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: 40px 0px;
+  }
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  text-align: center;
+}

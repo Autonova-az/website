@@ -36,7 +36,7 @@ export default async function Home({searchParams}) {
 
 async function getAutomobiles(locale) {
     try {
-        const response = await fetch(`${BASE_URL}/automobiles?locale=${locale}`, {
+        const response = await fetch(`${BASE_URL}/view-automobiles?locale=${locale}`, {
             cache: 'no-store'
         })
 
