@@ -1,32 +1,45 @@
 'use client'
 
-import {useState} from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { getTranslation } from '@/locales/translations'
+import { getClientLocale } from '@/utils/locale'
 import styles from './search.module.css'
-import {useRouter} from 'next/navigation';
-
 
 export default function SearchPage() {
     const [vinCode, setVinCode] = useState('')
     const [error, setError] = useState('')
-    const router = useRouter();
+    const [locale, setLocale] = useState('az')
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
+    useEffect(() => {
+        const currentLocale = searchParams.get('locale') || getClientLocale()
+        setLocale(currentLocale)
+    }, [searchParams])
+
+    const t = (key) => getTranslation(locale, key)
 
     const handleSearch = async (e) => {
         e.preventDefault()
 
         if (!vinCode.trim()) {
-            setError('VIN kodu daxil edin')
+            setError(t('searchPage.errors.required'))
             return
         }
 
         if (vinCode.length !== 17) {
-            setError('VIN kodu 17 simvoldan ibarət olmalıdır')
+            setError(t('searchPage.errors.invalidLength'))
             return
         }
 
         setError('')
 
-        router.push(`/search/${vinCode}`)
-
+        const params = new URLSearchParams(searchParams)
+        const queryString = params.toString()
+        const searchUrl = queryString ? `/search/${vinCode}?${queryString}` : `/search/${vinCode}`
+        
+        router.push(searchUrl)
     }
 
     const handleInputChange = (e) => {
@@ -48,16 +61,16 @@ export default function SearchPage() {
                 <div className={styles.searchHeader}>
                     <div className={styles.searchBadge}>
                         <i className="fas fa-search"></i>
-                        <span>VIN Axtarış</span>
+                        <span>{t('searchPage.subtitle')}</span>
                     </div>
 
                     <h1 className={styles.searchTitle}>
-                        <span className={styles.titleMain}>Avtomobil</span>
-                        <span className={styles.titleHighlight}>Axtarışı</span>
+                        <span className={styles.titleMain}>{t('searchPage.title').split(' ')[0] || 'Car'}</span>
+                        <span className={styles.titleHighlight}>{t('searchPage.title').split(' ')[1] || 'Search'}</span>
                     </h1>
 
                     <p className={styles.searchDescription}>
-                        VIN kodunu daxil edərək avtomobilin <strong>təfərrüatlı məlumatlarını</strong> əldə edin
+                        {t('searchPage.description')}
                     </p>
                 </div>
 
@@ -70,7 +83,7 @@ export default function SearchPage() {
                                     type="text"
                                     value={vinCode}
                                     onChange={handleInputChange}
-                                    placeholder="VIN kodunu daxil edin (17 simvol)"
+                                    placeholder={t('searchPage.vinPlaceholder')}
                                     className={`${styles.vinInput} ${error ? styles.inputError : ''}`}
                                     maxLength={17}
                                 />
@@ -89,12 +102,10 @@ export default function SearchPage() {
 
                         <button
                             type="submit"
-                            className={`${styles.searchButton} `}
+                            className={styles.searchButton}
                         >
-                            <>
-                                <i className="fas fa-search"></i>
-                                <span>Axtarış Et</span>
-                            </>
+                            <i className="fas fa-search"></i>
+                            <span>{t('searchPage.searchButton')}</span>
                         </button>
                     </form>
 
@@ -102,16 +113,16 @@ export default function SearchPage() {
                         <div className={styles.infoCard}>
                             <i className="fas fa-info-circle"></i>
                             <div>
-                                <h4>VIN Kodu Nədir?</h4>
-                                <p>17 simvoldan ibarət unikal avtomobil identifikasiya nömrəsi</p>
+                                <h4>{t('searchPage.info.whatIsVin.title')}</h4>
+                                <p>{t('searchPage.info.whatIsVin.description')}</p>
                             </div>
                         </div>
 
                         <div className={styles.infoCard}>
                             <i className="fas fa-map-marker-alt"></i>
                             <div>
-                                <h4>Harada Tapılır?</h4>
-                                <p>Ön şüşənin sol alt hissəsində və ya sürücü qapısında</p>
+                                <h4>{t('searchPage.info.whereToFind.title')}</h4>
+                                <p>{t('searchPage.info.whereToFind.description')}</p>
                             </div>
                         </div>
                     </div>

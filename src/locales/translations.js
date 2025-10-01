@@ -11,7 +11,8 @@ export const translations = {
       services: 'Xidmətlər',
       about: 'Haqqımızda',
       contact: 'Əlaqə',
-      brands: 'Markalar'
+      brands: 'Markalar',
+      search: 'Axtarış'
     },
     // About page
     about: {
@@ -383,6 +384,28 @@ export const translations = {
         expectedArrivalDate: 'Təxmini Çatış Tarixi', // NEW
       }
     },
+    // Search Page
+    searchPage: {
+      title: 'Avtomobil Axtarışı',
+      subtitle: 'VIN Axtarış',
+      description: 'VIN kodunu daxil edərək avtomobilin təfərrüatlı məlumatlarını əldə edin',
+      vinPlaceholder: 'VIN kodunu daxil edin (17 simvol)',
+      searchButton: 'Axtarış Et',
+      errors: {
+        required: 'VIN kodu daxil edin',
+        invalidLength: 'VIN kodu 17 simvoldan ibarət olmalıdır'
+      },
+      info: {
+        whatIsVin: {
+          title: 'VIN Kodu Nədir?',
+          description: '17 simvoldan ibarət unikal avtomobil identifikasiya nömrəsi'
+        },
+        whereToFind: {
+          title: 'Harada Tapılır?',
+          description: 'Ön şüşənin sol alt hissəsində və ya sürücü qapısında'
+        }
+      }
+    },
     // Footer
     footer: {
       brand: {
@@ -421,7 +444,8 @@ export const translations = {
       services: 'Услуги',
       about: 'О нас',
       contact: 'Контакты',
-      brands: 'Бренды'
+      brands: 'Бренды',
+      search: 'Поиск'
     },
     // About page
     about: {
@@ -793,6 +817,28 @@ export const translations = {
         expectedArrivalDate: 'Ожидаемая дата прибытия', // NEW
       }
     },
+    // Search Page
+    searchPage: {
+      title: 'Поиск Автомобиля',
+      subtitle: 'VIN Поиск',
+      description: 'Введите VIN код для получения подробной информации об автомобиле',
+      vinPlaceholder: 'Введите VIN код (17 символов)',
+      searchButton: 'Найти',
+      errors: {
+        required: 'Введите VIN код',
+        invalidLength: 'VIN код должен состоять из 17 символов'
+      },
+      info: {
+        whatIsVin: {
+          title: 'Что такое VIN код?',
+          description: 'Уникальный идентификационный номер автомобиля из 17 символов'
+        },
+        whereToFind: {
+          title: 'Где найти?',
+          description: 'В левом нижнем углу лобового стекла или на водительской двери'
+        }
+      }
+    },
     // Footer
     footer: {
       brand: {
@@ -831,7 +877,8 @@ export const translations = {
       services: 'Services',
       about: 'About Us',
       contact: 'Contact',
-      brands: 'Brands'
+      brands: 'Brands',
+      search: 'Search'
     },
     // About page
     about: {
@@ -1201,6 +1248,28 @@ export const translations = {
         stopDuration: 'Stop Duration',
         departureDate: 'Departure Date', // NEW
         expectedArrivalDate: 'Estimated Arrival Date', // NEW
+      }
+    },
+    // Search Page
+    searchPage: {
+      title: 'Car Search',
+      subtitle: 'VIN Search',
+      description: 'Enter VIN code to get detailed information about the vehicle',
+      vinPlaceholder: 'Enter VIN code (17 characters)',
+      searchButton: 'Search',
+      errors: {
+        required: 'Please enter VIN code',
+        invalidLength: 'VIN code must be 17 characters long'
+      },
+      info: {
+        whatIsVin: {
+          title: 'What is VIN Code?',
+          description: 'Unique vehicle identification number consisting of 17 characters'
+        },
+        whereToFind: {
+          title: 'Where to Find?',
+          description: 'Bottom left corner of windshield or on driver\'s door'
+        }
       }
     },
     // Footer

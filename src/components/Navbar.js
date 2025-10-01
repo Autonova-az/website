@@ -98,13 +98,11 @@ export default function Navbar() {
         </ul>
 
         <div className="nav-actions">
-          <LanguageSwitcher />
-          <button className="search-btn">
+          <Link href={createLocalizedLink('/search')} className="search-btn">
             <i className="fas fa-search"></i>
-          </button>
-          <div className="theme-toggle">
-            <i className="fas fa-moon"></i>
-          </div>
+            <span className="search-text">{t('nav.search')}</span>
+          </Link>
+          <LanguageSwitcher />
           <div 
             className={`hamburger ${isMobileMenuOpen ? 'active' : ''}`}
             onClick={toggleMobileMenu}
