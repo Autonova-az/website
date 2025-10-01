@@ -5,9 +5,9 @@
 import SearchPageClient from "@/app/search/SearchPageClient";
 import {getServerLocale} from "@/utils/locale";
 
-export default function SearchPage({searchParams}) {
+export default async function SearchPage({searchParams}) {
 
-    const locale = getServerLocale(searchParams)
+    const locale = await  getServerLocale(searchParams)
 
     return (
        <SearchPageClient locale ={locale}/>
