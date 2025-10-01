@@ -10,9 +10,7 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ searchParams }) {
   try {
-    console.log("[Metadata] searchParams:", searchParams)
     const locale = await getServerLocale(searchParams)
-    console.log("[Metadata] resolved locale:", locale)
 
     const t = (key) => getTranslation(locale, key)
 
@@ -29,21 +27,18 @@ export async function generateMetadata({ searchParams }) {
 async function getAboutData(locale) {
   const url = `${BASE_URL}/about?locale=${locale}`
   try {
-    console.log("[AboutData] Fetching:", url)
 
     const response = await fetch(url, {
       cache: 'no-store',
       next: { revalidate: 0 }
     })
 
-    console.log("[AboutData] Response status:", response.status)
 
     if (!response.ok) {
       throw new Error(`[AboutData] Failed with status ${response.status}`)
     }
 
     const result = await response.json()
-    console.log("[AboutData] API result:", result)
 
     return result.data
   } catch (error) {
@@ -53,13 +48,10 @@ async function getAboutData(locale) {
 }
 
 export default async function About({ searchParams }) {
-  console.log("[About] initial searchParams:", searchParams)
 
   const locale = await getServerLocale(searchParams)
-  console.log("[About] resolved locale:", locale)
 
   const aboutData = await getAboutData(locale)
-  console.log("[About] aboutData:", aboutData)
 
   const t = (key) => {
     try {
@@ -74,7 +66,6 @@ export default async function About({ searchParams }) {
 
   // Stats
   const stats = aboutData?.aboutData?.[0]?.statistics?.map(stat => {
-    console.log("[Stats] mapping stat:", stat)
     return {
       icon: "fas fa-chart-line",
       number: parseInt(stat.number),
@@ -82,11 +73,9 @@ export default async function About({ searchParams }) {
       suffix: stat.suffix || ""
     }
   }) || []
-  console.log("[Stats] final:", stats)
 
   // Team members
   const teamMembers = aboutData?.teamMembers?.map(member => {
-    console.log("[Team] mapping member:", member)
     return {
       name: member.name,
       position: member.position,
@@ -96,7 +85,6 @@ export default async function About({ searchParams }) {
       phone: member.phone
     }
   }) || []
-  console.log("[Team] final:", teamMembers)
 
   // Values (static from translations)
   const values = [
@@ -121,7 +109,6 @@ export default async function About({ searchParams }) {
       description: t('about.values.transparency.description')
     }
   ]
-  console.log("[Values] final:", values)
 
   return (
     <>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import styles from './Hero.module.css'
 import { getTranslation } from '@/locales/translations'
+import Link from "next/link";
 
 export default function Hero({ locale = 'az' }) {
   const [counters, setCounters] = useState({
@@ -80,15 +81,15 @@ export default function Hero({ locale = 'az' }) {
           </div>
 
           <div className={styles.heroButtons}>
-            <a href="/automobiles" className="btn btn-primary">
+            <Link href="/automobiles" className="btn btn-primary">
               <i className="fas fa-car"></i>
               <span>{getTranslation(locale, 'hero.buttons.explore')}</span>
               <div className="btn-shine"></div>
-            </a>
-            <a href="#contact" className="btn btn-secondary">
+            </Link>
+            <Link href="#contact" className="btn btn-secondary">
               <i className="fas fa-phone-alt"></i>
               <span>{getTranslation(locale, 'hero.buttons.consultation')}</span>
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -96,7 +97,7 @@ export default function Hero({ locale = 'az' }) {
           <div className={styles.carShowcase}>
             <div className={styles.carImage}>
               <Image
-                src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800"
+                src="/hero_car.jpeg"
                 alt="Premium Car"
                 width={800}
                 height={600}

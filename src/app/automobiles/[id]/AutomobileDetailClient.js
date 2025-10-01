@@ -7,7 +7,7 @@ import RouteMap from '@/components/RouteMap'
 import {translations} from '@/locales/translations'
 import styles from './automobile-detail.module.css'
 
-export default function AutomobileDetailClient({id, locale = 'az', initialData = null}) {
+export default function AutomobileDetailClient({id, locale = 'az', initialData}) {
     const router = useRouter()
     const [car, setCar] = useState(initialData)
     const [selectedImage, setSelectedImage] = useState(0)

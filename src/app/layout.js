@@ -18,13 +18,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="az">
-      <head>
+    <head>
 
-      </head>
-      <body className={`${inter.variable} font-sans`}>
-      <Suspense fallback={<div>Loading navbar...</div>}>
-          {/*//TODO navbari her ekranda ayrica qoy searhcparams otur*/}
-          <Navbar />
+    </head>
+    <body className={`${inter.variable} font-sans`}>
+    <Suspense fallback={<div>Loading navbar...</div>}>
+        {/*//TODO navbari her ekranda ayrica qoy searhcparams otur*/}
+        <Navbar />
       </Suspense>
         {children}
         <Script src="/js/main.js" strategy="afterInteractive" />

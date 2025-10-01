@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 // Fetch automobile data on server side
 async function fetchAutomobile(id, locale) {
     try {
-        const response = await fetch(`${BASE_URL}/automobiles/${id}?locale=${locale}`, {
+        const response = await fetch(`${BASE_URL}/view-automobiles/${id}?locale=${locale}`, {
             cache: 'no-store', // Ensure fresh data,
             next: {revalidate: 0}
         })

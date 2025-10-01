@@ -52,7 +52,7 @@ export default function AutomobilesClient({locale, features, brands}) {
                 queryParams.append('page', currentPage.toString())
                 queryParams.append('per_page', carsPerPage.toString())
 
-                const response = await fetch(`${BASE_URL}/automobiles?${queryParams.toString()}`)
+                const response = await fetch(`${BASE_URL}/view-automobiles?${queryParams.toString()}`)
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`)
