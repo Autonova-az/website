@@ -1,4 +1,3 @@
-
 import styles from './AutomobileFilters.module.css'
 import {getTranslation} from '../locales/translations'
 
@@ -88,14 +87,14 @@ export default function AutomobileFilters({
               </button>
             </span>
                     )}
-                    {vinCode && (
-                        <span className={styles.activeFilter}>
-              {t('filters.vinCode')}: {vinCode}
-                            <button onClick={() => handleVinChange('')}>
-                <i className="fas fa-times"></i>
-              </button>
-            </span>
-                    )}
+            {/*        {vinCode && (*/}
+            {/*            <span className={styles.activeFilter}>*/}
+            {/*  {t('filters.vinCode')}: {vinCode}*/}
+            {/*                <button onClick={() => handleVinChange('')}>*/}
+            {/*    <i className="fas fa-times"></i>*/}
+            {/*  </button>*/}
+            {/*</span>*/}
+            {/*        )}*/}
                     {selectedFeatures && selectedFeatures.length > 0 && selectedFeatures.map(featureId => (
                         <span key={featureId} className={styles.activeFilter}>
               {t('filters.features')}: {getFeatureName(featureId)}
@@ -122,19 +121,19 @@ export default function AutomobileFilters({
                 />
             </div>
 
-            <div className={styles.filterGroup}>
-                <label className={styles.filterLabel}>
-                    <i className="fas fa-barcode"></i>
-                    {t('filters.vinCode')}
-                </label>
-                <input
-                    type="text"
-                    value={vinCode}
-                    onChange={(e) => handleVinChange(e.target.value)}
-                    placeholder={t('filters.vinCodePlaceholder')}
-                    className={styles.searchInput}
-                />
-            </div>
+            {/*<div className={styles.filterGroup}>*/}
+            {/*    <label className={styles.filterLabel}>*/}
+            {/*        <i className="fas fa-barcode"></i>*/}
+            {/*        {t('filters.vinCode')}*/}
+            {/*    </label>*/}
+            {/*    <input*/}
+            {/*        type="text"*/}
+            {/*        value={vinCode}*/}
+            {/*        onChange={(e) => handleVinChange(e.target.value)}*/}
+            {/*        placeholder={t('filters.vinCodePlaceholder')}*/}
+            {/*        className={styles.searchInput}*/}
+            {/*    />*/}
+            {/*</div>*/}
 
             {/* Sort */}
             <div className={styles.filterGroup}>
@@ -184,7 +183,7 @@ export default function AutomobileFilters({
                     <i className="fas fa-star"></i>
                     {t('filters.features')}
                 </label>
-                { (
+                {(
                     <div className={styles.checkboxGroup}>
                         {features.map(feature => (
                             <label key={feature.id} className={styles.checkboxLabel}>
