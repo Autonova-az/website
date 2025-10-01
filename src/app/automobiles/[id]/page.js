@@ -15,7 +15,7 @@ export async function generateMetadata({params, searchParams}) {
     const t = translations[locale]
 
     // Fetch car data for metadata
-    const carData = await fetchAutomobile(resolvedParams.id, locale)
+    const carData = await fetchAutomobile(resolvedParams.id, locale, "view-automobiles")
 
     if (carData) {
         return {

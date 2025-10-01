@@ -35,6 +35,7 @@ export default async function Navbar({ locale }) {
     return queryString ? `${href}?${queryString}` : href
   }
 
+
   return (
       <nav className="navbar">
         <div className="nav-container">
@@ -86,7 +87,7 @@ export default async function Navbar({ locale }) {
               </Link>
             </li>
             <li className="nav-item">
-              <a href={createLocalizedLink2("/#contact")} className="nav-link nav-cta">
+              <a href={"/#contact"} className="nav-link nav-cta">
                 <i className="fas fa-phone-alt"></i>
                 <span className="nav-text">{t("nav.contact")}</span>
               </a>
