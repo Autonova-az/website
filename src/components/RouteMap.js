@@ -31,6 +31,9 @@ const calculateJourneyStats = () => {
   let daysRemaining = 0
   let totalDays = car.journey_tracking.total_days
 
+  const journeyStarted = car.journey_tracking.journey_started;
+  const journeyCompleted = car.journey_tracking.journey_completed; // <--- Bu sətiri əlavə edin
+
   // Əgər səfər başlamayıbsa
   if (!car.journey_tracking.journey_started) {
     daysOnRoad = 0
@@ -62,7 +65,9 @@ const calculateJourneyStats = () => {
     status: car.journey_tracking.status,
     message: car.journey_tracking.message,
     currentLocation: car.journey_tracking.current_location,
-    totalDurationHours
+    totalDurationHours,
+    journeyStarted,
+    journeyCompleted,
   }
 }
 
