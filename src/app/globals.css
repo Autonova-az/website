@@ -30,6 +30,18 @@ body {
     padding: 0 20px;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 /* Navigation */
 .navbar {
     position: sticky;
@@ -64,15 +76,16 @@ body {
     align-items: center;
     gap: 1rem;
     cursor: pointer;
+    text-decoration: none; /* Ensure no underline */
     transition: transform 0.3s ease;
 }
 
 .nav-logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.03); /* Slightly reduced scale for smoother effect */
 }
 
 .logo-icon {
-    width: 50px;
+    min-width: 50px; /* Use min-width to prevent shrinking */
     height: 50px;
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     border-radius: 12px;
@@ -110,6 +123,7 @@ body {
     background-clip: text;
     margin: 0;
     letter-spacing: -0.5px;
+    white-space: nowrap; /* Prevent "AUTONOVA" from wrapping */
 }
 
 .logo-tagline {
@@ -120,6 +134,7 @@ body {
     letter-spacing: 1px;
     margin-top: -5px;
     display: block;
+    white-space: nowrap; /* Prevent "Premium Cars" from wrapping */
 }
 
 .nav-menu {
@@ -127,6 +142,8 @@ body {
     list-style: none;
     gap: 0.5rem;
     align-items: center;
+    margin: 0; /* Remove default ul margin */
+    padding: 0; /* Remove default ul padding */
 }
 
 .nav-item {
@@ -146,6 +163,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     overflow: hidden;
+    z-index: 1; /* Ensure text is above ::before */
 }
 
 .nav-link::before {
@@ -165,9 +183,18 @@ body {
     opacity: 1;
 }
 
+.nav-link.active::before { /* Added active state for background */
+    opacity: 1;
+    background: linear-gradient(135deg, #e0efff 0%, #c4daff 100%); /* Slightly darker active background */
+}
+
 .nav-link:hover {
     color: #1e40af;
     transform: translateY(-2px);
+}
+
+.nav-link.active { /* Added active state for text color */
+    color: #1e40af;
 }
 
 .nav-indicator {
@@ -187,10 +214,8 @@ body {
 }
 
 .nav-indicator.active {
-    width: 80%; /* Match hover width for consistency, or 100% if preferred */
+    width: 80%;
 }
-
-
 
 .nav-cta {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
@@ -201,6 +226,7 @@ body {
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     position: relative;
     overflow: hidden;
+    white-space: nowrap; /* Prevent "Contact" from wrapping */
 }
 
 .nav-cta::before {
@@ -238,6 +264,7 @@ body {
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .search-btn:hover {
@@ -258,13 +285,13 @@ body {
 }
 
 .hamburger {
-    display: none;
+    display: none; /* Hidden by default on desktop */
     flex-direction: column;
     cursor: pointer;
     padding: 8px;
     border-radius: 8px;
     transition: background 0.3s ease;
-    z-index: 1001;
+    z-index: 1001; /* Ensure hamburger is above other elements */
 }
 
 .hamburger:hover {
@@ -292,39 +319,145 @@ body {
     transform: rotate(45deg) translate(-5px, -6px);
 }
 
-/* Mobile Navigation */
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 80px; /* Below the navbar */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 80px); /* Fill remaining height */
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 999; /* Below navbar but above content */
+    transform: translateX(-100%); /* Start off-screen */
+    transition: transform 0.4s ease-in-out;
+    display: flex; /* Use flexbox for vertical centering if needed */
+    flex-direction: column;
+    justify-content: flex-start; /* Align items to top */
+    padding: 2rem 0;
+    overflow-y: auto; /* Allow scrolling if menu content is long */
+}
+
+.mobile-menu-overlay.active {
+    transform: translateX(0%); /* Slide in */
+}
+
+.nav-menu-mobile {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Spacing between mobile menu items */
+}
+
+.nav-menu-mobile .nav-item {
+    width: 100%; /* Make items fill width */
+}
+
+.nav-menu-mobile .nav-link {
+    padding: 15px 0; /* Larger touch targets */
+    font-size: 1.1rem; /* Larger font size for readability */
+    justify-content: center; /* Center text in mobile links */
+}
+
+.nav-menu-mobile .nav-link.nav-cta {
+    margin: 1rem auto 0; /* Center CTA button */
+    max-width: fit-content; /* Adjust width to content */
+}
+
+
+/* Media Queries for Responsiveness */
 @media (max-width: 991px) {
-    .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 80px;
-        flex-direction: column;
-        background-color: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-        padding: 2rem 0;
-        gap: 1rem;
+    .nav-container {
+        padding: 0 1rem; /* Reduce padding on smaller screens */
     }
 
-    .nav-menu.active {
-        left: 0;
+    .nav-logo {
+        gap: 0.75rem;
+    }
+
+    .logo-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+
+    .logo-text h2 {
+        font-size: 1.6rem;
+    }
+
+    .logo-tagline {
+        font-size: 0.7rem;
+    }
+
+    .nav-menu {
+        display: none; /* Hide desktop menu on mobile */
     }
 
     .hamburger {
-        display: flex;
+        display: flex; /* Show hamburger on mobile */
     }
 
     .nav-actions .search-btn {
-        padding: 0.5rem;
+        padding: 0.5rem; /* Smaller padding for search button */
+        font-size: 0.8rem;
     }
 
     .nav-actions .search-text {
-        display: none;
+        display: none; /* Hide search text on mobile */
+    }
+
+    /* Adjust language switcher if necessary */
+    .language-switcher { /* Assuming this class exists */
+        /* potentially adjust padding/size here */
     }
 }
+
+@media (max-width: 600px) {
+    .nav-container {
+        height: 70px; /* Slightly smaller navbar height on very small screens */
+    }
+
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .logo-text h2 {
+        font-size: 1.4rem;
+    }
+
+    .logo-tagline {
+        font-size: 0.65rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Buttons */
 .btn {
