@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-import { setClientLocale, getClientLocale } from '../utils/locale'
+import { useRouter, usePathname } from 'next/navigation'
 import styles from './LanguageSwitcher.module.css'
 
 const languages = [
@@ -17,17 +16,13 @@ const selectedLanguage = {
   "en": "Selected language"
 }
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({currentLocale, searchParams}) {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
-  const [currentLocale, setCurrentLocale] = useState('az')
   const dropdownRef = useRef(null)
 
-  useEffect(() => {
-    setCurrentLocale(getClientLocale())
-  }, [searchParams])
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -43,8 +38,6 @@ export default function LanguageSwitcher() {
   const currentLanguage = languages.find(lang => lang.code === currentLocale)
 
   const handleLanguageChange = (langCode) => {
-    setClientLocale(langCode)
-    setCurrentLocale(langCode)
 
     const params = new URLSearchParams(searchParams)
 

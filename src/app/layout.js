@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import Navbar from "@/components/Navbar";
-import {Suspense} from "react";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,10 +18,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="az">
-    <head>
+      <head>
 
-    </head>
-    <body className={`${inter.variable} font-sans`}>
+      </head>
+      <body className={`${inter.variable} font-sans`}>
         {children}
         <Script src="/js/main.js" strategy="afterInteractive" />
       </body>

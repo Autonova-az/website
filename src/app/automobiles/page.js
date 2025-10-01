@@ -2,6 +2,7 @@ import {getServerLocale} from '@/utils/locale'
 import AutomobilesClient from './AutomobilesClient'
 import BASE_URL from "@/utils/baseurl";
 import Navbar from "@/components/Navbar";
+import {headers} from "next/headers";
 
 
 export const dynamic = "force-dynamic";
@@ -18,8 +19,9 @@ export default async function AutomobilesPage({searchParams}) {
     const brands = await fetchBrands(locale);
 
 
+
     return (<>
-        <Navbar searchParams={searchParams} locale={locale}/>
+        <Navbar   locale={locale}/>
         <AutomobilesClient features={features} brands={brands} locale={locale}/>
 
     </>)

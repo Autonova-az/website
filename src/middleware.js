@@ -36,7 +36,7 @@ export function middleware(request) {
 
   // --- Optional: Debugging logs (remove in production) ---
 
-  console.log( "isliyen middlware asagidaki");
+  console.log( "isliyen middlware yuxardaki");
 
 
   return response;

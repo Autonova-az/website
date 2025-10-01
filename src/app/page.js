@@ -8,6 +8,7 @@ import Footer from '@/components/Footer'
 import {getServerLocale} from '@/utils/locale'
 import BASE_URL from "@/utils/baseurl";
 import Navbar from '@/components/Navbar'
+import {headers} from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -17,9 +18,10 @@ export default async function Home({searchParams}) {
     const features = await getFeatures(locale)
     const brands = await getBrands(locale)
     const automobilies = await getAutomobiles(locale)
+
     return (
         <>
-            <Navbar locale={locale} searchParams={searchParams} />
+            <Navbar locale={locale} />
             <Hero locale={locale}/>
             <Features features={features} locale={locale}/>
             <Gallery automobilies={automobilies}  locale={locale}/>

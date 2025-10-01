@@ -113,7 +113,7 @@ export default async function About({ searchParams }) {
 
   return (
     <>
-      <Navbar searchParams={searchParams} locale={locale}/>
+      <Navbar locale={locale}/>
       {/* Page Header */}
       <section className={styles.pageHeader}>
         <div className="container">

@@ -37,7 +37,7 @@ export default async function AutomobileDetailPage({params, searchParams}) {
 
     return (
         <>
-            <Navbar searchParams={searchParams}/>
+            <Navbar locale={locale}/>
             <AutomobileDetailClient
                 id={automobileData.id}
                 locale={locale}

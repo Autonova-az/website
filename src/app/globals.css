@@ -186,9 +186,11 @@ body {
     width: 80%;
 }
 
-.nav-link.active .nav-indicator {
-    width: 100%;
+.nav-indicator.active {
+    width: 80%; /* Match hover width for consistency, or 100% if preferred */
 }
+
+
 
 .nav-cta {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
