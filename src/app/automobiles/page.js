@@ -22,7 +22,7 @@ export default async function AutomobilesPage({searchParams}) {
 
     return (<>
         <Navbar   locale={locale}/>
-        <AutomobilesClient features={features} brands={brands} locale={locale}/>
+        <AutomobilesClient initialSearchParams={searchParams} features={features} brands={brands} locale={locale}/>
 
     </>)
 

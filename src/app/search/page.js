@@ -9,7 +9,7 @@ export default async function SearchPage({searchParams}) {
 
     return (
         <>
-            <Navbar  locale={locale}/>
+            <Navbar searchParams={searchParams} locale={locale}/>
             <SearchPageClient locale ={locale}/>
         </>
     )

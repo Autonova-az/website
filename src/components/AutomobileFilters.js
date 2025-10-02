@@ -2,24 +2,24 @@ import styles from './AutomobileFilters.module.css'
 import {getTranslation} from '../locales/translations'
 
 export default function AutomobileFilters({
-                                              locale,
-                                              searchTerm,
-                                              onSearchChange,
-                                              vinCode,
-                                              onVinChange,
-                                              selectedFeatures,
-                                              onFeaturesChange,
-                                              selectedBrandId,
-                                              onBrandChange,
-                                              sortBy,
-                                              sortOrder,
-                                              onSortChange,
-                                              features,
-                                              brands
-                                          }) {
+    locale,
+    searchTerm,
+    onSearchChange,
+    vinCode,
+    onVinChange,
+    selectedFeatures, // Bu bir string dizisi olacak
+    onFeaturesChange,
+    selectedBrandId,
+    onBrandChange,
+    sortBy,
+    sortOrder,
+    onSortChange,
+    features, // features objelerindeki id'ler number veya string olabilir
+    brands,
+    onClearFilters // Yeni prop
+}) {
 
     const t = (key) => getTranslation(locale, key)
-
 
     const handleSearchChange = (value) => {
         onSearchChange(value)
@@ -33,37 +33,35 @@ export default function AutomobileFilters({
         onBrandChange(value)
     }
 
-    // Get brand name by ID for display
     const getSelectedBrandName = () => {
         if (!selectedBrandId) return ''
         const brand = brands.find(b => b.id.toString() === selectedBrandId.toString())
         return brand ? brand.name : ''
     }
 
-    // Get feature name by ID for display
     const getFeatureName = (featureId) => {
         const feature = features.find(f => f.id.toString() === featureId.toString())
         return feature ? feature.name : featureId
     }
 
-    const handleSortChange = (field, order) => {
+    const handleSortChangeInternal = (e) => {
+        const [field, order] = e.target.value.split('-')
         onSortChange(field, order)
     }
 
     const handleFeatureToggle = (featureId) => {
-        const updatedFeatures = selectedFeatures.includes(featureId.toString())
-            ? selectedFeatures.filter(f => f !== featureId.toString())
-            : [...selectedFeatures, featureId.toString()]
+        const featureIdString = String(featureId); // Her zaman string olarak karşılaştır
+        const updatedFeatures = selectedFeatures.includes(featureIdString)
+            ? selectedFeatures.filter(f => f !== featureIdString)
+            : [...selectedFeatures, featureIdString]
 
         onFeaturesChange(updatedFeatures)
     }
 
     const clearFilters = () => {
-        onSearchChange('')
-        onVinChange('')
-        onFeaturesChange([])
-        onBrandChange('')
-        onSortChange('name', 'asc')
+        if (onClearFilters) {
+            onClearFilters();
+        }
     }
 
     return (
@@ -81,27 +79,19 @@ export default function AutomobileFilters({
                 <div className={styles.activeFiltersList}>
                     {selectedBrandId && (
                         <span className={styles.activeFilter}>
-              {t('filters.activeFilterLabels.brand')}: {getSelectedBrandName()}
+                            {t('filters.activeFilterLabels.brand')}: {getSelectedBrandName()}
                             <button onClick={() => handleBrandChange('')}>
-                <i className="fas fa-times"></i>
-              </button>
-            </span>
+                                <i className="fas fa-times"></i>
+                            </button>
+                        </span>
                     )}
-            {/*        {vinCode && (*/}
-            {/*            <span className={styles.activeFilter}>*/}
-            {/*  {t('filters.vinCode')}: {vinCode}*/}
-            {/*                <button onClick={() => handleVinChange('')}>*/}
-            {/*    <i className="fas fa-times"></i>*/}
-            {/*  </button>*/}
-            {/*</span>*/}
-            {/*        )}*/}
                     {selectedFeatures && selectedFeatures.length > 0 && selectedFeatures.map(featureId => (
                         <span key={featureId} className={styles.activeFilter}>
-              {t('filters.features')}: {getFeatureName(featureId)}
+                            {t('filters.features')}: {getFeatureName(featureId)}
                             <button onClick={() => handleFeatureToggle(featureId)}>
-                <i className="fas fa-times"></i>
-              </button>
-            </span>
+                                <i className="fas fa-times"></i>
+                            </button>
+                        </span>
                     ))}
                 </div>
             </div>
@@ -121,20 +111,6 @@ export default function AutomobileFilters({
                 />
             </div>
 
-            {/*<div className={styles.filterGroup}>*/}
-            {/*    <label className={styles.filterLabel}>*/}
-            {/*        <i className="fas fa-barcode"></i>*/}
-            {/*        {t('filters.vinCode')}*/}
-            {/*    </label>*/}
-            {/*    <input*/}
-            {/*        type="text"*/}
-            {/*        value={vinCode}*/}
-            {/*        onChange={(e) => handleVinChange(e.target.value)}*/}
-            {/*        placeholder={t('filters.vinCodePlaceholder')}*/}
-            {/*        className={styles.searchInput}*/}
-            {/*    />*/}
-            {/*</div>*/}
-
             {/* Sort */}
             <div className={styles.filterGroup}>
                 <label className={styles.filterLabel}>
@@ -143,10 +119,7 @@ export default function AutomobileFilters({
                 </label>
                 <select
                     value={`${sortBy}-${sortOrder}`}
-                    onChange={(e) => {
-                        const [field, order] = e.target.value.split('-')
-                        handleSortChange(field, order)
-                    }}
+                    onChange={handleSortChangeInternal} // Internal handler
                     className={styles.filterSelect}
                 >
                     <option value="name-asc">{t('filters.sortOptions.nameAsc')}</option>
@@ -176,7 +149,6 @@ export default function AutomobileFilters({
                 </select>
             </div>
 
-
             {/* Features Filter */}
             <div className={styles.filterGroup}>
                 <label className={styles.filterLabel}>
@@ -189,20 +161,18 @@ export default function AutomobileFilters({
                             <label key={feature.id} className={styles.checkboxLabel}>
                                 <input
                                     type="checkbox"
-                                    checked={selectedFeatures.includes(feature.id.toString())}
+                                    checked={selectedFeatures.includes(String(feature.id))} // feature.id'yi String'e çevir
                                     onChange={() => handleFeatureToggle(feature.id)}
                                     className={styles.checkbox}
                                 />
                                 <span className={styles.checkboxText}>
-                  {feature.name}
-                </span>
+                                    {feature.name}
+                                </span>
                             </label>
                         ))}
                     </div>
                 )}
             </div>
-
-
         </div>
     )
 }
