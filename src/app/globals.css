@@ -681,8 +681,8 @@ body {
         font-size: 1.8rem;
     }
 
-    .logo-text h2 {
-        font-size: 1.5rem;
+    .logo-text  {
+        display: none;
     }
 
     .nav-container {
