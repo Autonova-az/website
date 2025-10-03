@@ -91,7 +91,7 @@ export default function ServicesHero({ locale = 'az' }) {
         </div>
       </div>
 
-      <div className={styles.heroStats}>
+      {/* <div className={styles.heroStats}>
         <div className={styles.statsContainer}>
           <div className={styles.statItem}>
             <div className={styles.statIcon}>
@@ -137,7 +137,7 @@ export default function ServicesHero({ locale = 'az' }) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.scrollIndicator}>
         <div className={styles.scrollText}>{getTranslation(locale, 'servicesHero.scroll')}</div>

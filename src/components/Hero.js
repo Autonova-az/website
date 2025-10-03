@@ -126,7 +126,7 @@ export default function Hero({ locale = 'az' }) {
 
       </div>
 
-      <div className={styles.heroStats}>
+      {/* <div className={styles.heroStats}>
         <div className={styles.statsContainer}>
           <div className={styles.statItem}>
             <div className={styles.statIcon}>
@@ -172,7 +172,7 @@ export default function Hero({ locale = 'az' }) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
 
       <div className={styles.scrollIndicator}>

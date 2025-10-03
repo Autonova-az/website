@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding: 120px 0 0 0;
+  padding: 120px 0 ;
 }
 
 .heroBackground {
@@ -102,19 +102,19 @@
   animation: slideInLeft 0.8s ease-out;
 }
 
-.titleLine::before {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  opacity: 0.3;
-  transform: translate(3px, 3px);
-  z-index: -1;
-}
+/*.titleLine::before {*/
+/*  content: attr(data-text);*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);*/
+/*  -webkit-background-clip: text;*/
+/*  -webkit-text-fill-color: transparent;*/
+/*  background-clip: text;*/
+/*  opacity: 0.3;*/
+/*  transform: translate(3px, 3px);*/
+/*  z-index: -1;*/
+/*}*/
 
 .titleLine:nth-child(1) {
   animation-delay: 0.1s;
