@@ -123,7 +123,14 @@ export default function Footer({searchParams}) {
         </div>
 
         <div className={styles.footerBottom}>
-          <p>&copy; {currentYear} Autonova. {t('footer.copyright')}</p>
+          <div className={styles.copyrightSection}>
+            <p>&copy; {currentYear} Autonova. {t('footer.copyright')}</p>
+          </div>
+          <div className={styles.developerSection}>
+            <a href="https://fourx.az" target="_blank" rel="noopener noreferrer">
+              <img src="/fourx.png" alt="FourX Development" className={styles.developerLogo} />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

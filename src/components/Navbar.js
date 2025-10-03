@@ -29,12 +29,12 @@ export default async function Navbar({ locale }) {
       <div className="nav-container">
         <Link href={createLocalizedLink("/")} className="nav-logo">
           <div className="logo-icon">
-            <i className="fas fa-car"></i>
+            <img src="/logo.png" alt="Autonova Logo" className="logo-image" />
           </div>
-          <div className="logo-text">
+          {/* <div className="logo-text">
             <h2>AUTONOVA</h2>
             <span className="logo-tagline">Premium Cars</span>
-          </div>
+          </div> */}
         </Link>
 
         <ul className="nav-menu">

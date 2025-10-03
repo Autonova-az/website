@@ -9,6 +9,7 @@ import {getServerLocale} from '@/utils/locale'
 import BASE_URL from "@/utils/baseurl";
 import Navbar from '@/components/Navbar'
 import {headers} from "next/headers";
+import { convertAutomotiveIcons } from '@/utils/iconConverter';
 
 export const dynamic = "force-dynamic";
 
@@ -101,7 +102,7 @@ async function getFeatures(locale = 'az') {
         if (data.success) {
             return data.data.map((item, index) => ({
                 number: String(index + 1).padStart(2, '0'),
-                icon: convertHeroiconToFontAwesome(item.icon),
+                icon: convertAutomotiveIcons(item.icon),
                 title: item.title,
                 description: item.description,
                 link: item.route,
@@ -116,17 +117,7 @@ async function getFeatures(locale = 'az') {
     }
 }
 
-const convertHeroiconToFontAwesome = (heroicon) => {
-    const iconMap = {
-        'heroicon-o-shield-check': 'fas fa-shield-check',
-        'heroicon-o-truck': 'fas fa-shipping-fast',
-        'heroicon-o-phone': 'fas fa-headset',
-        'heroicon-o-document-text': 'fas fa-file-contract',
-        'heroicon-o-currency-dollar': 'fas fa-dollar-sign',
-        'heroicon-o-wrench-screwdriver': 'fas fa-tools'
-    }
-    return iconMap[heroicon] || 'fas fa-star'
-}
+
 const getActionText = (route, locale = 'az') => {
     const textMap = {
         az: {
